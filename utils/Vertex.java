@@ -17,6 +17,11 @@ public class Vertex {
         this.vertex.z = z;
     }
 
-     
+    public Vertex add(double x, double y, double z) {
+        return new Vertex(vertex.x+x, vertex.y+y, vertex.z+z);
+    }
 
+    public Vertex sub(double x, double y, double z) {
+        return new Vertex(vertex.x-x, vertex.y-y, vertex.z-z);
+    }
 }
