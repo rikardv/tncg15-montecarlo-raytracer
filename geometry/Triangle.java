@@ -1,10 +1,15 @@
 package geometry;
 
-import utils.Vector3d;
+import utils.*;
 
 public class Triangle {
+    Vertex v1, v2, v3;
+    public Vector3d normal = Maths.crossProduct(v1.sub(v2), v3.sub(v2));
 
-    Vector3d position = new Vector3d(0.0, 0.0, 0.0);
-    
+    public Triangle() {
+        v1 = new Vertex();
+        v2 = new Vertex();
+        v3 = new Vertex();
+    }
 
 }

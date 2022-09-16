@@ -1,27 +1,38 @@
 package utils;
 
 public class Vertex {
-    //stores the coodinat of a vertex in world space
-    Vector3d vertex = new Vector3d();
+    // stores the coodinat of a vertex in world space
 
-    //default 
-    public Vertex(){
-        this.vertex.x = 0.0;
-        this.vertex.y = 0.0;
-        this.vertex.z = 0.0;
+    double x;
+    double y;
+    double z;
+
+    // default
+    public Vertex() {
+        this.x = 0.0;
+        this.y = 0.0;
+        this.z = 0.0;
     }
 
-    public Vertex(double x,double y,double z){
-        this.vertex.x = x;
-        this.vertex.y = y;
-        this.vertex.z = z;
+    public Vertex(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public Vertex add(double x, double y, double z) {
-        return new Vertex(vertex.x+x, vertex.y+y, vertex.z+z);
+        return new Vertex(this.x + x, this.y + y, this.z + z);
     }
 
     public Vertex sub(double x, double y, double z) {
-        return new Vertex(vertex.x-x, vertex.y-y, vertex.z-z);
+        return new Vertex(this.x - x, this.y - y, this.z - z);
+    }
+
+    public Vertex sub(Vertex otherVertex) {
+        return new Vertex(this.x - otherVertex.x, this.y - otherVertex.y, this.z - otherVertex.z);
+    }
+
+    public Vertex add(Vertex otherVertex) {
+        return new Vertex(this.x + otherVertex.x, this.y + otherVertex.y, this.z + otherVertex.z);
     }
 }
