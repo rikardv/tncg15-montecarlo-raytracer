@@ -17,4 +17,7 @@ public class Vector3d {
         this.y = 0.0;
         this.z = 0.0;
     }
+
+    
+    
 }

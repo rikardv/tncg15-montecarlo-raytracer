@@ -9,7 +9,16 @@ public class Rectangle {
     Vertex v3;
     Vertex v4;
 
-    vector3d
+    /*
+            normal towards you
+     *      v4----v3
+     *      |      |
+     *      |      |
+     *      v1-----v2
+     */
+
+     //V2->V3 X V2->V1
+    vector3d normal = Maths.crossProduct()
 
     int test;
     Vector3d position;
