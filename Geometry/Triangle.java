@@ -1,6 +1,6 @@
-package Geometry;
+package geometry;
 
-import Utils.Vector3d;
+import utils.Vector3d;
 
 public class Triangle {
 

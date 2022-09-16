@@ -1,5 +1,5 @@
-package Geometry;
-import Utils.*;
+package geometry;
+import utils.*;
 
 public class Rectangle {
 

@@ -1,5 +1,5 @@
-package Scene;
-import Utils.Vector3d;
+package scene;
+import utils.Vector3d;
 
 public class Camera {
 

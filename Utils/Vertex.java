@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 public class Vertex {
     //stores the coodinat of a vertex in world space
