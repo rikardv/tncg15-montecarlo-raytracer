@@ -9,6 +9,8 @@ public class Rectangle {
     Vertex v3;
     Vertex v4;
 
+    vector3d
+
     int test;
     Vector3d position;
 
