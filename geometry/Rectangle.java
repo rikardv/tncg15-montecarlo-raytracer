@@ -5,11 +5,11 @@ import utils.*;
 public class Rectangle {
 
     // vertices for the rectangle
-    Vertex v1;
-    Vertex v2;
-    Vertex v3;
-    Vertex v4;
-    ColorRGB  color = new ColorRGB();
+    public Vertex v1;
+    public Vertex v2;
+    public Vertex v3;
+    public Vertex v4;
+    ColorRGB color = new ColorRGB();
 
     /*
      * normal towards you
@@ -28,7 +28,8 @@ public class Rectangle {
         v2 = new Vertex();
         v3 = new Vertex();
         v4 = new Vertex();
-        normal = Maths.crossProduct(v1.sub(v2),v3.sub(v2));
+
+        normal = Maths.crossProduct(v1.CreateEdge(v2), v3.CreateEdge(v2));
 
     }
 
@@ -37,8 +38,12 @@ public class Rectangle {
         this.v2 = v2;
         this.v3 = v3;
         this.v4 = v4;
-        normal = Maths.crossProduct(v3.sub(v2),v1.sub(v2));
+        normal = Maths.crossProduct(v3.CreateEdge(v2), v1.CreateEdge(v2));
 
+    }
+
+    public void SetColor(double R, double G, double B) {
+        this.color = new ColorRGB(R, G, B);
     }
 
 }

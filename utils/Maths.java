@@ -3,7 +3,7 @@ package utils;
 public class Maths {
 
     // Returns the crossproduct of two vectors. Output is Vector3d
-    public static Vector3d crossProduct(Vertex u, Vertex v) {
+    public static Vector3d crossProduct(Vector3d u, Vector3d v) {
 
         double x = u.y * v.z - u.z * v.y;
         double y = u.z * v.x - u.x * v.z;
