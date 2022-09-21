@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import geometry.Rectangle;
 import utils.Vertex;
 
+// just test to push
+
 /*
  * 1.Loop through all pixels.
  * 2.Shoot a ray through each pixel.
