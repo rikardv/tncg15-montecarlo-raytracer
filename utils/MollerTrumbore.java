@@ -47,7 +47,9 @@ public class MollerTrumbore {
         {
             // outIntersectionPoint.set(0.0, 0.0, 0.0);
             // outIntersectionPoint.scaleAdd(t, rayVector, rayOrigin);
-            outIntersectionPoint = new Vertex(rayOrigin);
+            
+            outIntersectionPoint.set(rayOrigin);
+            
             outIntersectionPoint.add(rayVector.x * t, rayVector.y * t, rayVector.z*t);
             return true;
         } else // This means that there is a line intersection but not a ray intersection.

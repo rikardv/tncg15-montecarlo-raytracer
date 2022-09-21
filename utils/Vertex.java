@@ -3,9 +3,9 @@ package utils;
 public class Vertex {
     // stores the coodinat of a vertex in world space
 
-    double x;
-    double y;
-    double z;
+    public double x;
+    public double y;
+    public double z;
 
     // default
     public Vertex() {
@@ -27,14 +27,24 @@ public class Vertex {
 
     }
 
+     public void set(Vertex vertex) {
+        this.x = vertex.x;
+        this.y = vertex.y;
+        this.z = vertex.z;
+
+    }
+
     public Vertex(Vertex vertex) {
         this.x = vertex.x;
         this.y = vertex.y;
         this.z = vertex.z;
     }
 
-    public Vertex add(double x, double y, double z) {
-        return new Vertex(this.x + x, this.y + y, this.z + z);
+    public void add(double x, double y, double z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+        
     }
 
     public Vertex sub(double x, double y, double z) {

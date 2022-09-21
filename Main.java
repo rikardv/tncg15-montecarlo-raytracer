@@ -5,9 +5,14 @@ import utils.*;
 import javax.imageio.ImageIO;
 
 import geometry.Rectangle;
+import scene.Camera;
+import scene.Scene;
 import utils.Vertex;
 
-// just test to push
+import java.util.*;
+import java.awt.Color;
+
+// Nästa steg, Superclass geonemty så vi kan stega igenom alla typer av object i scenen;
 
 /*
  * 1.Loop through all pixels.
@@ -21,52 +26,22 @@ import utils.Vertex;
 public class Main {
     public static void main(String[] args) {
 
-        Vertex v1 = new Vertex(-1, 0, -20);
-        Vertex v2 = new Vertex(1, 0, -20);
-        Vertex v3 = new Vertex(1, 0, -10);
-        Vertex v4 = new Vertex(-1, 0, -10);
+        /**
+        Initialize program timer */
+        long start = System.nanoTime();
+
+        
+
+        Scene testScene = new Scene();
+        Camera camera = new Camera();
+        camera.Render(testScene);
+        //System.out.println(testScene.getObj(0).checkIntersect(rayOrigin, rayVector, outIntersectionPoint));
+        
 
         /**
-         * Test MollerTrumbore
+         * Print time for program to execute
          */
-        Rectangle inRectangle = new Rectangle(v1, v2, v3, v4);
-        Vertex rayOrigin = new Vertex(0, -1, 0);
-        Vertex outIntersectionPoint = new Vertex();
-        Vector3d rayVector = new Vector3d(0, 1, 0);
-        boolean test = MollerTrumbore.rayIntersectsRectangle(rayOrigin, rayVector, inRectangle, outIntersectionPoint);
-
-        System.out.println("Intersect?: " + (test ? "yes" : "no"));
-        outIntersectionPoint.printVertex();
-
+        long end = System.nanoTime();
+        System.out.println("Time for program to execute: " + (end - start) / 1000000000.0F);
     }
 }
-
-/**
- * Template for generating an image
- */
-// Random random = new Random();
-
-// long start = System.nanoTime();
-// int width = 800;
-// int height = 800;
-
-// File image = new File("Image.png");
-// BufferedImage buffer = new BufferedImage(width, height,
-// BufferedImage.TYPE_INT_RGB);
-
-// for (int y = 0; y < height; y++){
-// for (int x = 0; x < width; x++){
-// buffer.setRGB(x, y, random.nextInt());
-// }
-// }
-
-// try{
-// ImageIO.write(buffer, "PNG", image);
-// } catch (Exception e) {
-// System.out.println("Could not write image");
-// System.exit(1);
-// }
-
-// long end = System.nanoTime();
-// System.out.println("Loop time: " + (end-start)/1000000000.0F);
-// }

@@ -2,7 +2,7 @@ package geometry;
 
 import utils.*;
 
-public class Triangle {
+public class Triangle extends Geometry{
     Vertex v1, v2, v3;
     public Vector3d normal;
 
@@ -42,6 +42,10 @@ public class Triangle {
 
     public Vertex getVertex2() {
         return this.v3;
+    }
+
+    public boolean checkIntersect(Vertex rayOrigin, Vector3d rayVector, Vertex outIntersectionPoint){
+        return MollerTrumbore.rayIntersectsTriangle(rayOrigin, rayVector, this, outIntersectionPoint);
     }
 
 }
