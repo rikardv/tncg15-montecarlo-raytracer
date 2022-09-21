@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 public class Camera {
 
-    Vertex eyePosition = new Vertex(-1.0, 0.0, 0.0);
+    Vertex eyePosition = new Vertex(-1, 0.0, 0);
     double dist2Display;
     int[][] pixelGrid;
     Vertex planeCenter = new Vertex(0,0,0);
@@ -59,7 +59,7 @@ public class Camera {
 
 
     public void Render(Scene scene){
-        File image = new File("Image.png");
+        File image = new File("Image1.png");
         BufferedImage buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
 
@@ -67,7 +67,7 @@ public class Camera {
             for (int x = -width/2; x < width/2; x++){
                 ColorRGB pixelColor = new ColorRGB();
                 
-                Vertex currentCameraVertex = new Vertex(0,planeCenter.x+ (float)x/(width/2),planeCenter.z+ (float)z/(height/2));
+                Vertex currentCameraVertex = new Vertex(planeCenter.x,planeCenter.y+ (float)x/(width/2),planeCenter.z+ (float)z/(height/2));
                 Vector3d RayVector = currentCameraVertex.CreateEdge(eyePosition);
                 Vertex outIntersectionPoint = new Vertex();
 
