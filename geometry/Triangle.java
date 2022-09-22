@@ -44,8 +44,25 @@ public class Triangle extends Geometry{
         return this.v3;
     }
 
-    public boolean checkIntersect(Vertex rayOrigin, Vector3d rayVector, Vertex outIntersectionPoint){
+    public boolean checkIntersect(Vertex rayOrigin, Ray rayVector, Vertex outIntersectionPoint){
         return MollerTrumbore.rayIntersectsTriangle(rayOrigin, rayVector, this, outIntersectionPoint);
+    }
+
+    @Override
+    public Vector3d getNormal(){
+        return normal;
+    }
+
+        @Override
+        public Ray bounceRay(Ray rayIn, Vertex intersectionPoint){
+        Vertex start = intersectionPoint;
+        // R = 2(N dot L)N-L
+        
+        double NdotL = 2*Maths.dotProduct(rayIn.dir, normal);
+        Vector3d R = normal.Multiply(NdotL).sub(rayIn.dir);
+        Ray rayOut= new Ray(start,R,rayIn); 
+
+        return rayOut;
     }
 
 }

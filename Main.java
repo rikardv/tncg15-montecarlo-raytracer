@@ -23,6 +23,15 @@ import java.awt.Color;
  * 6.You map the double values to the RGB range 0-255 andcreate an image with these values.
  */
 
+
+ /*
+  * NÄSTA GÅNG! 
+    1. Gå igenom funtionerna i rad 89-99 och se så att dom faktiskt fungerar som dom ska
+    2. 
+
+
+  */
+
 public class Main {
     public static void main(String[] args) {
 

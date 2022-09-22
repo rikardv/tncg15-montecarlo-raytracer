@@ -57,8 +57,35 @@ public class Rectangle extends Geometry{
     }
     
     @Override
-    public boolean checkIntersect(Vertex rayOrigin, Vector3d rayVector, Vertex outIntersectionPoint){
-        return MollerTrumbore.rayIntersectsRectangle(rayOrigin, rayVector, this, outIntersectionPoint);
+    public boolean checkIntersect(Vertex rayOrigin, Ray ray, Vertex outIntersectionPoint){
+
+       
+        return MollerTrumbore.rayIntersectsRectangle(rayOrigin, ray, this, outIntersectionPoint);
+    }
+
+    @Override
+    public Vector3d getNormal(){
+        return normal;
+    }
+
+        @Override
+        public Ray bounceRay(Ray rayIn, Vertex intersectionPoint){
+
+            //räkna på papper och gör en test på bara funktionen
+            Vertex start = intersectionPoint;
+
+            normal = getNormal().invers();
+            // R = 2(N dot L)N-L
+            
+            double NdotL = 2*Maths.dotProduct(rayIn.dir.norm(), normal.norm());
+            Vector3d R = normal.norm().Multiply(NdotL).sub(rayIn.dir.norm());
+            Ray rayOut= new Ray(start,R,rayIn); 
+    
+            return rayOut;
+    }
+
+    public void setReflectionCoeff(double coeff){
+        this.reflectCoeff = coeff;
     }
 
 }

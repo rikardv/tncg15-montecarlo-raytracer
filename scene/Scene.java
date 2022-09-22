@@ -18,11 +18,14 @@ public class Scene {
     Rectangle W6 = new Rectangle(new Vertex(-3,0,-5),new Vertex(0,6,-5),new Vertex(0,6,5),new Vertex(-3,0,5),0,255,0);
     Rectangle test = new Rectangle(new Vertex(10,-1,-1),new Vertex(10,1,-1),new Vertex(10,1,1),new Vertex(10,-1,1),0,0,255);
     Rectangle floor = new Rectangle(new Vertex(-3,-6,-5),new Vertex(13,-6,-5),new Vertex(13,6,-5),new Vertex(-3,6,-5),100,40,40);
+
+    
     
     public ArrayList<Geometry> sceneObjects= new ArrayList<Geometry>(100);
 
     public Scene(){
         sceneObjects.add(W4);
+        W3.setReflectionCoeff(1.0);
          sceneObjects.add(W3);
 
          sceneObjects.add(W2);
@@ -30,6 +33,7 @@ public class Scene {
         // sceneObjects.add(W4);
          sceneObjects.add(W5);
          sceneObjects.add(W6);
+         floor.setReflectionCoeff(1.0);
          sceneObjects.add(floor);
     }
 

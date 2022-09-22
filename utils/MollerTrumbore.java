@@ -7,7 +7,7 @@ public class MollerTrumbore {
     private static final double EPSILON = 0.0000001;
 
     public static boolean rayIntersectsTriangle(Vertex rayOrigin, 
-                                                Vector3d rayVector,
+                                                Ray rayVector,
                                                 Triangle inTriangle,
                                                 Vertex outIntersectionPoint) {
         Vertex vertex0 = inTriangle.getVertex0();
@@ -21,7 +21,7 @@ public class MollerTrumbore {
         double a, f, u, v;
         edge1 = vertex1.CreateEdge(vertex0);
         edge2 = vertex2.CreateEdge(vertex0);
-        h = Maths.crossProduct(rayVector, edge2);
+        h = Maths.crossProduct(rayVector.dir, edge2);
         a = Maths.dotProduct(edge1,h);
         if (a > -EPSILON && a < EPSILON) {
             return false;    // This ray is parallel to this triangle.
@@ -35,7 +35,7 @@ public class MollerTrumbore {
             return false;
         }
         q = Maths.crossProduct(s, edge1);
-        double RVdotQ = Maths.dotProduct(rayVector,q);
+        double RVdotQ = Maths.dotProduct(rayVector.dir,q);
         v = f * RVdotQ;
         if (v < 0.0 || u + v > 1.0) {
             return false;
@@ -50,16 +50,18 @@ public class MollerTrumbore {
             
             outIntersectionPoint.set(rayOrigin);
             
-            outIntersectionPoint.add(rayVector.x * t, rayVector.y * t, rayVector.z*t);
+            outIntersectionPoint.add(rayVector.dir.x * t, rayVector.dir.y * t, rayVector.dir.z*t);
             return true;
         } else // This means that there is a line intersection but not a ray intersection.
         {
             return false;
         }
     }
+
+   
     
     public static boolean rayIntersectsRectangle(Vertex rayOrigin, 
-    Vector3d rayVector,
+    Ray rayVector,
     Rectangle inRectangle,
     Vertex outIntersectionPoint) {
 
