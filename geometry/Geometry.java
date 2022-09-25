@@ -1,7 +1,6 @@
 package geometry;
 
 import utils.*;
-import utils.MollerTrumbore;
 
 
 public class Geometry {
@@ -26,6 +25,14 @@ public class Geometry {
 
     public Vector3d getNormal(){
         return normal;
+    }
+
+    public void setReflectionCoeff(double coeff){
+        reflectCoeff = coeff;
+    }
+
+    public void SetColor(double R, double G, double B) {
+        color = new ColorRGB(R, G, B);
     }
 
     

@@ -32,6 +32,14 @@ public class Triangle extends Geometry{
         normal = Maths.crossProduct(v1.CreateEdge(v2), v3.CreateEdge(v2));
     }
 
+    public Triangle(Vertex V1, Vertex V2, Vertex V3, double r, double g, double b) {
+        this.v1 = V1;
+        this.v2 = V2;
+        this.v3 = V3;
+        this.SetColor(r, g, b);
+        normal = Maths.crossProduct(v1.CreateEdge(v2), v3.CreateEdge(v2));
+    }
+
     public Vertex getVertex0() {
         return this.v1;
     }
@@ -55,14 +63,17 @@ public class Triangle extends Geometry{
 
         @Override
         public Ray bounceRay(Ray rayIn, Vertex intersectionPoint){
-        Vertex start = intersectionPoint;
-        // R = 2(N dot L)N-L
-        
-        double NdotL = 2*Maths.dotProduct(rayIn.dir, normal);
-        Vector3d R = normal.Multiply(NdotL).sub(rayIn.dir);
-        Ray rayOut= new Ray(start,R,rayIn); 
+          //räkna på papper och gör en test på bara funktionen
+          Vertex start = intersectionPoint;
 
-        return rayOut;
+          normal = getNormal().invers();
+          // R = L - 2(N dot L)N
+          
+          double NdotL = 2*Maths.dotProduct(rayIn.dir.norm(), normal.norm());
+          Vector3d R = (rayIn.dir.norm()).sub(normal.norm().Multiply(NdotL));
+          Ray rayOut= new Ray(start,R,rayIn); 
+  
+          return rayOut;
     }
 
 }

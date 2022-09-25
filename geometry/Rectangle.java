@@ -50,16 +50,11 @@ public class Rectangle extends Geometry{
         normal = Maths.crossProduct(v3.CreateEdge(v2), v1.CreateEdge(v2));
 
     }
-
-
-    public void SetColor(double R, double G, double B) {
-        this.color = new ColorRGB(R, G, B);
-    }
     
     @Override
     public boolean checkIntersect(Vertex rayOrigin, Ray ray, Vertex outIntersectionPoint){
 
-       
+
         return MollerTrumbore.rayIntersectsRectangle(rayOrigin, ray, this, outIntersectionPoint);
     }
 
@@ -75,17 +70,13 @@ public class Rectangle extends Geometry{
             Vertex start = intersectionPoint;
 
             normal = getNormal().invers();
-            // R = 2(N dot L)N-L
+            // R = L - 2(N dot L)N
             
             double NdotL = 2*Maths.dotProduct(rayIn.dir.norm(), normal.norm());
-            Vector3d R = normal.norm().Multiply(NdotL).sub(rayIn.dir.norm());
+            Vector3d R = (rayIn.dir.norm()).sub(normal.norm().Multiply(NdotL));
             Ray rayOut= new Ray(start,R,rayIn); 
     
             return rayOut;
-    }
-
-    public void setReflectionCoeff(double coeff){
-        this.reflectCoeff = coeff;
     }
 
 }

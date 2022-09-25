@@ -59,7 +59,7 @@ public class Camera {
     }
 
     public void Render(Scene scene) {
-        File image = new File("Image1.png");
+        File image = new File("renders/Image2.png");
         BufferedImage buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         for (int z = -height / 2; z < height / 2; z++) {
@@ -85,34 +85,33 @@ public class Camera {
                         // Om vi får en studs
                         if (obj.reflectCoeff == 1) {
 
-
+                    
                             Ray reflectedRay = obj.bounceRay(CurrentRay, outIntersectionPoint);
+
                             Vertex pointOfReflection = outIntersectionPoint;
                             
-                            // Geometry targeGeometry = LoopReflect(reflectedRay, pointOfReflection, scene.sceneObjects);
 
                             for (int j = 0; j < scene.sceneObjects.size(); j++) {
                                 Geometry loopobj = scene.sceneObjects.get(j);
                                 outIntersectionPoint = new Vertex();
                                 if (loopobj.checkIntersect(pointOfReflection, reflectedRay, outIntersectionPoint)) {
-                                    System.out.print("we got reflection");
                                     pixelColor = loopobj.color;
+                                    break;
                     
                                 }
                             } 
                             
-                            
-                            // outIntersectionPoint nollställs i moller så vi kan låta den vara kvar
-                            // System.out.println("Reflection!");
-                            //pixelColor = obj.color;
                         }
                         
+                        // default case - return objects color
                         else{pixelColor = obj.color;}
                         // System.out.println("Color of intersected oj r:"+ obj.color.r+ " g:" +
                         // obj.color.g + " b:" +obj.color.b);
 
-                    } else {
-
+                    } 
+                        // ray did not hit any geometry                  
+                    else {
+            
                     }
 
                 }
