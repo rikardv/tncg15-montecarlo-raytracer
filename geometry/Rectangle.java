@@ -85,8 +85,13 @@ public class Rectangle extends Geometry {
 
     double NdotL = 2 * Maths.dotProduct(rayIn.dir.norm(), normal.norm());
     Vector3d R = (rayIn.dir.norm()).sub(normal.norm().Multiply(NdotL));
-    Ray rayOut = new Ray(start, R, rayIn);
-
+    Ray rayOut = new Ray(start, R);
+    rayIn.setChild(rayOut);
+    rayOut.depth = rayIn.depth+1;
     return rayOut;
   }
+  @Override
+    public boolean hitLight() {
+        return false;
+    }
 }

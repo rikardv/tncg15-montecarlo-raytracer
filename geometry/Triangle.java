@@ -92,4 +92,9 @@ public class Triangle extends Geometry {
 
     return rayOut;
   }
+
+  @Override
+    public boolean hitLight() {
+        return false;
+    }
 }

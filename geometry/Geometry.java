@@ -37,4 +37,9 @@ public class Geometry {
   public void SetColor(double R, double G, double B) {
     color = new ColorRGB(R, G, B);
   }
+
+  public boolean hitLight(){
+    System.out.println("Something went wrong: hitLight not overriden");
+    return false;
+  }
 }

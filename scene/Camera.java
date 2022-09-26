@@ -54,6 +54,46 @@ public class Camera {
     pixelGrid = new int[height][width];
   }
 
+  public void followRay(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint){
+            for (int i = 0; i < scene.sceneObjects.size(); i++) {
+          Geometry obj = scene.sceneObjects.get(i);
+          if (
+            obj.checkIntersect(currentPoint, currentRay, outIntersectionPoint)
+          ) {
+            //träffar vi ljus, Klart, Eller för djupt, KLART
+            if (obj.hitLight() || currentRay.depth > 5){
+              //test, vit pixel om den träffar ljuskällan inom 5 studs;
+              currentRay.rayColor = obj.color;
+              return;
+            }
+          
+            // Om vi får en studs
+            if (obj.reflectCoeff == 1) {
+              Ray reflectedRay = obj.bounceRay(
+                currentRay,
+                outIntersectionPoint
+              );
+
+              Vertex pointOfReflection = outIntersectionPoint;
+
+              followRay(scene, pointOfReflection, reflectedRay, outIntersectionPoint);
+            }
+
+            else {
+              currentRay.rayColor = obj.color;
+            }
+           
+            // System.out.println("Color of intersected oj r:"+ obj.color.r+ " g:" +
+            // obj.color.g + " b:" +obj.color.b);
+
+          }
+          // ray did not hit any geometry
+          else {
+            
+          }
+        }
+  }
+
   public void Render(Scene scene) {
     File image = new File("renders/Image2.png");
     BufferedImage buffer = new BufferedImage(
@@ -72,50 +112,20 @@ public class Camera {
           planeCenter.z + (float) z / (height / 2)
         );
         Vector3d RayVector = currentCameraVertex.CreateEdge(eyePosition);
-        Ray CurrentRay = new Ray(eyePosition, RayVector);
+        Ray currentRay = new Ray(eyePosition, RayVector);
         Vertex outIntersectionPoint = new Vertex();
         Vertex currentPoint = eyePosition;
 
-        for (int i = 0; i < scene.sceneObjects.size(); i++) {
-          Geometry obj = scene.sceneObjects.get(i);
-          if (
-            obj.checkIntersect(currentPoint, CurrentRay, outIntersectionPoint)
-          ) {
-            // Om vi får en studs
-            if (obj.reflectCoeff == 1) {
-              Ray reflectedRay = obj.bounceRay(
-                CurrentRay,
-                outIntersectionPoint
-              );
+        followRay(scene, currentPoint, currentRay, outIntersectionPoint);
 
-              Vertex pointOfReflection = outIntersectionPoint;
-
-              for (int j = 0; j < scene.sceneObjects.size(); j++) {
-                Geometry loopobj = scene.sceneObjects.get(j);
-                outIntersectionPoint = new Vertex();
-                if (
-                  loopobj.checkIntersect(
-                    pointOfReflection,
-                    reflectedRay,
-                    outIntersectionPoint
-                  )
-                ) {
-                  pixelColor = loopobj.color;
-                  break;
-                }
-              }
-            }
-            // default case - return objects color
-            else {
-              pixelColor = obj.color;
-            }
-            // System.out.println("Color of intersected oj r:"+ obj.color.r+ " g:" +
-            // obj.color.g + " b:" +obj.color.b);
-
-          }
-          // ray did not hit any geometry
-          else {}
+        while(currentRay.child != null){
+          currentRay = currentRay.child;
         }
+
+        if (currentRay.rayColor == null){
+          System.out.println("x");
+        }
+        pixelColor = currentRay.rayColor;
 
         pixelColor.intColor();
         Color myColour = new Color(pixelColor.ir, pixelColor.ig, pixelColor.ib);

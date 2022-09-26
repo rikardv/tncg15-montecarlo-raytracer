@@ -3,6 +3,7 @@ package scene;
 import geometry.Geometry;
 import geometry.Rectangle;
 import geometry.Triangle;
+import geometry.Light;
 import java.util.ArrayList;
 import utils.Vertex;
 
@@ -132,26 +133,35 @@ public class Scene {
     0
   );
 
+  Light light = new Light();
+
   public ArrayList<Geometry> sceneObjects = new ArrayList<Geometry>(100);
 
   public Scene() {
+    
     sceneObjects.add(W4);
     W3.setReflectionCoeff(1.0);
     sceneObjects.add(W3);
 
+    
     sceneObjects.add(W2);
     sceneObjects.add(W1);
     // sceneObjects.add(W4);
     sceneObjects.add(W5);
     sceneObjects.add(W6);
     // floor.setReflectionCoeff(1.0);
+   
+   
+
     sceneObjects.add(Floor_W1);
     sceneObjects.add(Floor_W2);
     sceneObjects.add(Floor_W3);
 
-    sceneObjects.add(Roof_W1);
+   sceneObjects.add(Roof_W1);
     sceneObjects.add(Roof_W2);
     sceneObjects.add(Roof_W3);
+
+    sceneObjects.add(light);
   }
 
   public void add(Geometry obj) {
