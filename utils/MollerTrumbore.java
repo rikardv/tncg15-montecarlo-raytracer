@@ -3,8 +3,8 @@ package utils;
 import geometry.*;
 
 public class MollerTrumbore {
-
-  private static final double EPSILON = 0.0000001;
+  //9 nollor är idealt
+  private static final double EPSILON = 0.0000000001;
 
   public static boolean rayIntersectsTriangle(
     Vertex rayOrigin,

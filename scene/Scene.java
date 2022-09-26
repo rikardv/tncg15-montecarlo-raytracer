@@ -52,7 +52,7 @@ public class Scene {
     new Vertex(-3, 0, -5),
     new Vertex(-3, 0, 5),
     new Vertex(0, -6, 5),
-    255,
+    0,
     255,
     255
   );
