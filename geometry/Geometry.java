@@ -42,4 +42,9 @@ public class Geometry {
     System.out.println("Something went wrong: hitLight not overriden");
     return false;
   }
+
+  public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection){
+    System.out.println("Something went wrong: calculateDirectLight not overriden");
+    return new ColorRGB();
+  }
 }

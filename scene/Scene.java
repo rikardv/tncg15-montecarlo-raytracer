@@ -5,7 +5,10 @@ import geometry.Rectangle;
 import geometry.Triangle;
 import geometry.Light;
 import java.util.ArrayList;
+import java.util.Random;
+
 import utils.Vertex;
+import java.util.*;
 
 public class Scene {
 
@@ -15,9 +18,7 @@ public class Scene {
     new Vertex(10, 6, -5),
     new Vertex(10, 6, 5),
     new Vertex(0, 6, 5),
-    255,
-    0,
-    0
+    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
   );
 
   Rectangle W2 = new Rectangle(
@@ -25,54 +26,42 @@ public class Scene {
     new Vertex(13, 0, -5),
     new Vertex(13, 0, 5),
     new Vertex(10, 6, 5),
-    0,
-    255,
-    0
+    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
   );
   Rectangle W3 = new Rectangle(
     new Vertex(13, 0, -5),
     new Vertex(10, -6, -5),
     new Vertex(10, -6, 5),
     new Vertex(13, 0, 5),
-    100,
-    0,
-    0
+    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
   );
   Rectangle W4 = new Rectangle(
     new Vertex(10, -6, -5),
     new Vertex(0, -6, -5),
     new Vertex(0, -6, 5),
     new Vertex(10, -6, 5),
-    0,
-    0,
-    255
+    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
   );
   Rectangle W5 = new Rectangle(
     new Vertex(0, -6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(-3, 0, 5),
     new Vertex(0, -6, 5),
-    0,
-    255,
-    255
+    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
   );
   Rectangle W6 = new Rectangle(
     new Vertex(-3, 0, -5),
     new Vertex(0, 6, -5),
     new Vertex(0, 6, 5),
     new Vertex(-3, 0, 5),
-    0,
-    150,
-    150
+    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
   );
   Rectangle test = new Rectangle(
     new Vertex(10, -1, -1),
     new Vertex(10, 1, -1),
     new Vertex(10, 1, 1),
     new Vertex(10, -1, 1),
-    0,
-    0,
-    255
+    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
   );
 
   /**
@@ -83,25 +72,19 @@ public class Scene {
     new Vertex(0, 6, -5),
     new Vertex(0, -6, -5),
     new Vertex(10, -6, -5),
-    255,
-    165,
-    0
+    1.0,1.0,1.0
   );
   Triangle Floor_W2 = new Triangle(
     new Vertex(0, 6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(0, -6, -5),
-    255,
-    165,
-    0
+    1.0,1.0,1.0
   );
   Triangle Floor_W3 = new Triangle(
     new Vertex(10, -6, -5),
     new Vertex(13, 0, -5),
     new Vertex(10, 6, -5),
-    255,
-    165,
-    0
+    1.0,1.0,1.0
   );
 
   /**
@@ -112,28 +95,22 @@ public class Scene {
     new Vertex(10, -6, 5),
     new Vertex(0, -6, 5),
     new Vertex(0, 6, 5),
-    255,
-    255,
-    0
+    1.0,1.0,1.0
   );
   Triangle Roof_W2 = new Triangle(
     new Vertex(0, 6, 5),
     new Vertex(0, -6, 5),
     new Vertex(-3, 0, 5),
-    255,
-    255,
-    0
+    1.0,1.0,1.0
   );
   Triangle Roof_W3 = new Triangle(
     new Vertex(10, 6, 5),
     new Vertex(13, 0, 5),
     new Vertex(10, -6, 5),
-    255,
-    255,
-    0
+    1.0,1.0,1.0
   );
 
-  Light light = new Light();
+  public Light light = new Light();
 
   public ArrayList<Geometry> sceneObjects = new ArrayList<Geometry>(100);
 

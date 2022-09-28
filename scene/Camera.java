@@ -55,6 +55,10 @@ public class Camera {
   }
 
   public void followRay(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint){
+
+    //testing max value of direct light
+    ColorRGB test = new ColorRGB();
+
             for (int i = 0; i < scene.sceneObjects.size(); i++) {
           Geometry obj = scene.sceneObjects.get(i);
           if (
@@ -80,7 +84,10 @@ public class Camera {
             }
 
             else {
-              currentRay.rayColor = obj.color;
+              currentRay.rayColor = obj.calculateDirectLight(scene.light, outIntersectionPoint);
+              if(currentRay.rayColor.r > test.r){
+                test = new ColorRGB(currentRay.rayColor.r,currentRay.rayColor.g,currentRay.rayColor.b);
+              }
             }
            
             // System.out.println("Color of intersected oj r:"+ obj.color.r+ " g:" +
@@ -92,10 +99,11 @@ public class Camera {
             
           }
         }
+       // System.out.println("Max color from direct light = " + test.r);
   }
 
   public void Render(Scene scene) {
-    File image = new File("renders/Image2.png");
+    File image = new File("renders/Image3.png");
     BufferedImage buffer = new BufferedImage(
       width,
       height,

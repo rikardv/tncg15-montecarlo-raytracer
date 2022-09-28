@@ -74,6 +74,14 @@ public class Vertex {
     );
   }
 
+  public Vertex mult(double mul) {
+    return new Vertex(
+      this.x * mul,
+      this.y * mul,
+      this.z * mul
+    );
+  }
+
   public void printVertex() {
     System.out.println("(" + this.x + " " + this.y + " " + this.z + ")");
   }

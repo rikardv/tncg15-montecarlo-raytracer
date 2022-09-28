@@ -39,6 +39,17 @@ public class Vector3d {
     return new Vector3d(this.x - other.x, this.y - other.y, this.z - other.z);
   }
 
+  public Vector3d add(Vector3d other) {
+    return new Vector3d(this.x + other.x, this.y + other.y, this.z + other.z);
+  }
+
+  public double vectorLength(){
+    double length = Math.sqrt(
+      Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2)
+    );
+    return length;
+  }
+
   public Vector3d norm() {
     double length = Math.sqrt(
       Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2)
