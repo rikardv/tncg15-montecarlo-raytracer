@@ -22,6 +22,26 @@ public class ColorRGB {
     ir = (int) (r*255);
     ig = (int) (g*255);
     ib = (int) (b*255);
+
+    if (ir > 255){
+      ir = 255;
+    }
+    if (ig > 255){
+      ig = 255;
+    }
+    if (ib > 255){
+      ib = 255;
+    }
+    if (ir <0){
+      ir = 0;
+    }
+    if (ig < 0){
+      ig = 0;
+    }
+    if (ib < 0){
+      ib = 0;
+    }
+
   }
 
   public void set(double r, double g, double b) {

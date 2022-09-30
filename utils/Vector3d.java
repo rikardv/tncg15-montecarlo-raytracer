@@ -56,4 +56,6 @@ public class Vector3d {
     );
     return new Vector3d(this.x / length, this.y / length, this.z / length);
   }
+
+ 
 }

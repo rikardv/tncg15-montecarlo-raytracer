@@ -57,6 +57,16 @@ public class Vertex {
     );
   }
 
+  public Vertex translate(Vector3d edge){
+    return new Vertex(
+    this.x + edge.x,
+    this.y + edge.y,
+    this.z + edge.z
+    );
+
+
+  }
+
   // takes to a vertex and returns the vector of the edge drawn between them
   public Vector3d CreateEdge(Vertex otherVertex) {
     return new Vector3d(

@@ -4,6 +4,8 @@ import geometry.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import utils.*;
 
@@ -11,7 +13,7 @@ public class Camera {
 
   Vertex eyePosition = new Vertex(-1, 0.0, 0);
   double dist2Display;
-  int[][] pixelGrid;
+  ArrayList<ColorRGB> pixelGrid;
   Vertex planeCenter = new Vertex(0, 0, 0);
 
   /*
@@ -47,11 +49,11 @@ public class Camera {
   public Camera() {
     height = 800;
     width = 800;
-    pixelGrid = new int[height][width];
+    pixelGrid = new ArrayList<ColorRGB>(height*width);
   }
 
   public Camera(int height, int width) {
-    pixelGrid = new int[height][width];
+    pixelGrid = new ArrayList<ColorRGB>(height*width);
   }
 
   public void followRay(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint){
@@ -136,7 +138,9 @@ public class Camera {
         pixelColor = currentRay.rayColor;
 
         pixelColor.intColor();
+        
         Color myColour = new Color(pixelColor.ir, pixelColor.ig, pixelColor.ib);
+        pixelGrid.add(pixelColor);
         int rgb = myColour.getRGB();
         buffer.setRGB(
           (width - 1) - (x + width / 2),
@@ -162,6 +166,10 @@ public class Camera {
       System.exit(1);
     }
   }
+
+  
+
+  
   // sudo för render
   /*
    * for (heigt)
