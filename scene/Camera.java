@@ -66,6 +66,11 @@ public class Camera {
           if (
             obj.checkIntersect(currentPoint, currentRay, outIntersectionPoint)
           ) {
+
+            // if (obj instanceof Sphere) {
+            //   currentRay.rayColor = obj.color;
+            //   return;
+            // }
             //träffar vi ljus, Klart, Eller för djupt, KLART
             if (obj.hitLight() || currentRay.depth > 5){
               //test, vit pixel om den träffar ljuskällan inom 5 studs;
@@ -84,6 +89,7 @@ public class Camera {
 
               followRay(scene, pointOfReflection, reflectedRay, outIntersectionPoint);
             }
+            
 
             else {
               currentRay.rayColor = obj.calculateDirectLight(scene.light, outIntersectionPoint);
@@ -105,7 +111,7 @@ public class Camera {
   }
 
   public void Render(Scene scene) {
-    File image = new File("renders/Image3.png");
+    File image = new File("renders/Image4.png");
     BufferedImage buffer = new BufferedImage(
       width,
       height,

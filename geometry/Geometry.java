@@ -32,6 +32,10 @@ public class Geometry {
     return normal;
   }
 
+  public void setNormal(Vector3d normal) {
+    this.normal =normal;
+  }
+
   public void setReflectionCoeff(double coeff) {
     reflectCoeff = coeff;
   }
@@ -46,9 +50,9 @@ public class Geometry {
   }
 
   public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection) {
-    int shadowRays = 60;
+    int shadowRays = 5;
     // var q = u * ( v1 - v0) + v * (v2 - v0);
-
+    
     ColorRGB L = new ColorRGB(0, 0, 0);
     ColorRGB Ld = new ColorRGB(0, 0, 0);
 
@@ -83,7 +87,7 @@ public class Geometry {
         // cos(omegay) = Ny * di / ||di||
         // TODO - fixa normal för triangel
         double cosOmegax = Maths.dotProduct(di.Multiply(1 / abs_di), this.getNormal());
-        double cosOmegay = Maths.dotProduct(di.invers().Multiply(1 / abs_di), LightSource.normal);
+        double cosOmegay = -Maths.dotProduct(di.Multiply(1 / abs_di), LightSource.normal);
 
         L = L.add(this.color.mult((cosOmegax * cosOmegay) / (abs_di * abs_di)));
 

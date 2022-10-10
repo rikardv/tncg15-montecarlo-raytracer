@@ -85,7 +85,7 @@ public class Triangle extends Geometry {
     //räkna på papper och gör en test på bara funktionen
     Vertex start = intersectionPoint;
 
-    normal = getNormal().invers();
+    normal = getNormal();
     // R = L - 2(N dot L)N
 
     double NdotL = 2 * Maths.dotProduct(rayIn.dir.norm(), normal.norm());
@@ -93,6 +93,8 @@ public class Triangle extends Geometry {
     Ray rayOut = new Ray(start, R, rayIn);
 
     return rayOut;
+
+    
   }
 
   @Override

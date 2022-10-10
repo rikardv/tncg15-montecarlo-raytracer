@@ -95,5 +95,4 @@ public class Rectangle extends Geometry {
         return false;
     }
 
-   
 }
