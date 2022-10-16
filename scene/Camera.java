@@ -79,7 +79,7 @@ public class Camera {
             }
           
             // Om vi får en studs
-            if (obj.reflectCoeff == 1) {
+            if (obj.material.type == MaterialType.MIRROR) {
               Ray reflectedRay = obj.bounceRay(
                 currentRay,
                 outIntersectionPoint

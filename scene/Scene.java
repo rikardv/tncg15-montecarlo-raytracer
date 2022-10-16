@@ -5,6 +5,8 @@ import geometry.Rectangle;
 import geometry.Triangle;
 import geometry.Sphere;
 import geometry.Light;
+import geometry.Material;
+import geometry.MaterialType;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -126,7 +128,9 @@ public class Scene {
   public Scene() {
     
     sceneObjects.add(W4);
-    W3.setReflectionCoeff(9.0);
+    Material mirror = new Material(1.0f, 1, 1, MaterialType.MIRROR);
+    W3.setMaterial(mirror);
+    // W3.setReflectionCoeff(9.0);
     sceneObjects.add(W3);
 
     
@@ -149,7 +153,7 @@ public class Scene {
 
     sceneObjects.add(light);
 
-    firstSphere.setReflectionCoeff(1.0);
+    // firstSphere.setReflectionCoeff(1.0);
     sceneObjects.add(firstSphere);
     
   }

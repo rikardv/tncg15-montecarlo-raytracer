@@ -12,6 +12,8 @@ public class Geometry {
 
   public Vector3d normal;
 
+  public Material material = new Material();
+
   public boolean checkIntersect(
     Vertex rayOrigin,
     Ray rayVector,
@@ -99,6 +101,10 @@ public class Geometry {
     // else Vk = 1.0f;
 
     return Ld.mult(20);
+}
+
+public void setMaterial(Material material) {
+  this.material = material;
 }
 }
 
