@@ -92,7 +92,7 @@ public class Camera {
             
 
             else {
-              currentRay.rayColor = obj.calculateDirectLight(scene.light, outIntersectionPoint);
+              currentRay.rayColor = obj.calculateDirectLight(scene.light, outIntersectionPoint, 20);
               if(currentRay.rayColor.r > test.r){
                 test = new ColorRGB(currentRay.rayColor.r,currentRay.rayColor.g,currentRay.rayColor.b);
               }
@@ -111,7 +111,7 @@ public class Camera {
   }
 
   public void Render(Scene scene) {
-    File image = new File("renders/Image4.png");
+    File image = new File("renders/Image5.png");
     BufferedImage buffer = new BufferedImage(
       width,
       height,

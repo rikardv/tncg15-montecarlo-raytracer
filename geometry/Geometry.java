@@ -34,6 +34,11 @@ public class Geometry {
     return normal;
   }
 
+  public Vector3d getNormal(Vertex pointOfIntersection) {
+    System.out.println("Something went wrong: getNormal(Vertex) not overriden");
+    return new Vector3d();
+}
+
   public void setNormal(Vector3d normal) {
     this.normal =normal;
   }
@@ -51,8 +56,8 @@ public class Geometry {
     return false;
   }
 
-  public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection) {
-    int shadowRays = 5;
+  public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection, int nrShadowRays) {
+    int shadowRays = nrShadowRays;
     // var q = u * ( v1 - v0) + v * (v2 - v0);
     
     ColorRGB L = new ColorRGB(0, 0, 0);
@@ -81,14 +86,14 @@ public class Geometry {
         // sk är vectorn mellan ljus och puntk
         // di är distansen mellan di = yi - x
 
-        Vector3d di = yi.CreateEdge(pointOFIntersection);
-        double abs_di = di.vectorLength();
+        Vector3d di = pointOFIntersection.CreateEdge(yi);
+        double abs_di = Math.abs(di.vectorLength());
 
         // eventuellt "-" på sk
         // cos(omegax) = Nx * di / ||di||
         // cos(omegay) = Ny * di / ||di||
         // TODO - fixa normal för triangel
-        double cosOmegax = Maths.dotProduct(di.Multiply(1 / abs_di), this.getNormal());
+        double cosOmegax = Maths.dotProduct(di.Multiply(1 / abs_di), this instanceof Sphere ? this.getNormal(pointOFIntersection) : this.getNormal());
         double cosOmegay = -Maths.dotProduct(di.Multiply(1 / abs_di), LightSource.normal);
 
         L = L.add(this.color.mult((cosOmegax * cosOmegay) / (abs_di * abs_di)));
