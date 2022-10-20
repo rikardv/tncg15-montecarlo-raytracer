@@ -114,9 +114,9 @@ public class Scene {
   );
 
   Sphere firstSphere = new Sphere(
-    new Vertex(9,0,-4),
+    new Vertex(9,0,0),
     1.0,
-    1,0,0
+    1,1,1
   );
 
   
@@ -129,7 +129,7 @@ public class Scene {
     
     sceneObjects.add(W4);
     Material mirror = new Material(1.0f, 1, 1, MaterialType.MIRROR);
-    W3.setMaterial(mirror);
+   // W3.setMaterial(mirror);
     // W3.setReflectionCoeff(9.0);
     sceneObjects.add(W3);
 

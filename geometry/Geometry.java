@@ -56,6 +56,7 @@ public class Geometry {
     return false;
   }
 
+  
   public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection, int nrShadowRays) {
     int shadowRays = nrShadowRays;
     // var q = u * ( v1 - v0) + v * (v2 - v0);
