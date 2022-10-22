@@ -1,7 +1,10 @@
 package geometry;
 
+import java.beans.Visibility;
+import java.util.ArrayList;
 import java.util.Random;
 
+import scene.Scene;
 import utils.*;
 
 public class Geometry {
@@ -57,7 +60,7 @@ public class Geometry {
   }
 
   
-  public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection, int nrShadowRays) {
+  public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection, int nrShadowRays,ArrayList<Geometry> sceneObjects ) {
     int shadowRays = nrShadowRays;
     // var q = u * ( v1 - v0) + v * (v2 - v0);
     
@@ -87,6 +90,7 @@ public class Geometry {
         // sk är vectorn mellan ljus och puntk
         // di är distansen mellan di = yi - x
 
+        
         Vector3d di = pointOFIntersection.CreateEdge(yi);
         double abs_di = Math.abs(di.vectorLength());
 
@@ -97,8 +101,25 @@ public class Geometry {
         double cosOmegax = Maths.dotProduct(di.Multiply(1 / abs_di), this instanceof Sphere ? this.getNormal(pointOFIntersection) : this.getNormal());
         double cosOmegay = -Maths.dotProduct(di.Multiply(1 / abs_di), LightSource.normal);
 
-        L = L.add(this.color.mult((cosOmegax * cosOmegay) / (abs_di * abs_di)));
+        //Testar med dot approachen, här är den gamla ifall vi vill gå tillbaka till den :P 
+       // L = L.add(this.color.mult((cosOmegax * cosOmegay) / (abs_di * abs_di)));
 
+       //Något är lurt 
+       normal = this.getNormal();
+       Ray shadowRay = new Ray(yi,di);
+       
+        Double isVis = 1.0;
+
+    
+        if(!isVisible(shadowRay, sceneObjects)){
+          isVis = 0.0;
+          // L = new ColorRGB(1,0,0);
+          // break;
+          
+        }
+
+           L= L.add(this.color.mult(((Maths.dotProduct(di, normal.invers())) / (abs_di * abs_di))* isVis));
+       
     }
 
     Ld = L.mult(LightArea / (Math.PI *shadowRays));
@@ -106,11 +127,47 @@ public class Geometry {
     // if (!this->isVisible(shadowRay)) Vk = 0.0f;
     // else Vk = 1.0f;
 
-    return Ld.mult(20);
+    return Ld.mult(1);
 }
 
 public void setMaterial(Material material) {
   this.material = material;
+}
+
+//inte så bökig funktion. vi kollar vectorn som bildas mellan intersection av ett annat obj
+//blir mindre än vectorn som går från ljuskällan till punkten av vårat obj
+//om vi hittar en kortare vektor betyder det att objsektet är skymt 
+//VERKAR INTE FUNGERA 
+// på något sett så missar den intersecten eller något... 
+public boolean isVisible(Ray shadowRay, ArrayList<Geometry> sceneObjects ){
+
+  Double distance = Math.abs(shadowRay.dir.vectorLength());
+
+  Vertex intPoint = new Vertex();
+  Double minDist = 1000.0;
+  shadowRay.dir = shadowRay.dir.norm();
+
+  for (int i = 0; i < sceneObjects.size(); i++) {
+    Geometry obj = sceneObjects.get(i);
+    //VI KANSKE SKA TA IN ETT NYTT VÄRDE RAY START?
+      if (obj.checkIntersect(shadowRay.start, shadowRay, intPoint)){
+        //System.out.println("vi intersektar med något");
+        
+        if(Math.abs(intPoint.CreateEdge(shadowRay.start).vectorLength()) < minDist){
+          minDist = Math.abs(intPoint.CreateEdge(shadowRay.start).vectorLength());
+        }
+      }
+
+  }
+
+
+  if (minDist+0.5 <distance) 
+  {
+    
+    return false;}
+
+
+  return true;
 }
 }
 

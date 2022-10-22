@@ -1,6 +1,8 @@
 package geometry;
 
 import utils.*;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Sphere extends Geometry {
@@ -62,7 +64,7 @@ public class Sphere extends Geometry {
     }
 
     @Override
-    public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection, int nrShadowRays) {
+    public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection, int nrShadowRays,ArrayList<Geometry> sceneObjects) {
         int shadowRays = 1;
         // var q = u * ( v1 - v0) + v * (v2 - v0);
     
@@ -133,4 +135,7 @@ public class Sphere extends Geometry {
         return Ld.mult(2);
     }
     
+
+    
+
 }

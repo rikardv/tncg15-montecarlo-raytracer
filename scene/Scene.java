@@ -114,9 +114,17 @@ public class Scene {
   );
 
   Sphere firstSphere = new Sphere(
-    new Vertex(9,0,0),
-    1.0,
+    new Vertex(9,0,-3.5),
+    3.0,
     1,1,1
+  );
+
+  Rectangle lightBlock = new Rectangle(
+    new Vertex(8, -1, 1.5),
+    new Vertex(10, -1, -1.5),
+    new Vertex(10, 1, -4),
+    new Vertex(8, 1, -1),
+    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
   );
 
   
@@ -156,7 +164,9 @@ public class Scene {
     // firstSphere.setReflectionCoeff(1.0);
     Material lambertianMaterial = new Material(0.5f, 1,1, MaterialType.LAMBERTIAN);
     firstSphere.setMaterial(lambertianMaterial);
-    sceneObjects.add(firstSphere);
+    //sceneObjects.add(firstSphere);
+    lightBlock.setMaterial(mirror);
+    sceneObjects.add(lightBlock);
     
   }
 

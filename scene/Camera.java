@@ -92,7 +92,7 @@ public class Camera {
             
 
             else {
-              currentRay.rayColor = obj.calculateDirectLight(scene.light, outIntersectionPoint, 20);
+              currentRay.rayColor = obj.calculateDirectLight(scene.light, outIntersectionPoint, 20,scene.sceneObjects);
               if(currentRay.rayColor.r > test.r){
                 test = new ColorRGB(currentRay.rayColor.r,currentRay.rayColor.g,currentRay.rayColor.b);
               }
