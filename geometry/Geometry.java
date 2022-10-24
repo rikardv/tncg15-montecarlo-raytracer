@@ -9,7 +9,7 @@ import utils.*;
 
 public class Geometry {
 
-  public double reflectCoeff = 0.8;
+  public double reflectCoeff = 0.2;
 
   public ColorRGB color = new ColorRGB();
 
@@ -89,6 +89,7 @@ public class Geometry {
         // Disnans mellan intersection point och ljuskällan
         // sk är vectorn mellan ljus och puntk
         // di är distansen mellan di = yi - x
+    
 
         
         Vector3d di = pointOFIntersection.CreateEdge(yi);
@@ -98,23 +99,26 @@ public class Geometry {
         // cos(omegax) = Nx * di / ||di||
         // cos(omegay) = Ny * di / ||di||
         // TODO - fixa normal för triangel
-        double cosOmegax = Maths.dotProduct(di.Multiply(1 / abs_di), this instanceof Sphere ? this.getNormal(pointOFIntersection) : this.getNormal());
-        double cosOmegay = -Maths.dotProduct(di.Multiply(1 / abs_di), LightSource.normal);
+        // double cosOmegax = Maths.dotProduct(di.Multiply(1 / abs_di), this instanceof Sphere ? this.getNormal(pointOFIntersection) : this.getNormal());
+        // double cosOmegay = -Maths.dotProduct(di.Multiply(1 / abs_di), LightSource.normal);
 
         //Testar med dot approachen, här är den gamla ifall vi vill gå tillbaka till den :P 
        // L = L.add(this.color.mult((cosOmegax * cosOmegay) / (abs_di * abs_di)));
 
        //Något är lurt 
-       normal = this.getNormal();
+       this.setNormal(this instanceof Sphere ? this.getNormal(pointOFIntersection).invers() : this.getNormal());
        Ray shadowRay = new Ray(yi,di);
        
-        Double isVis = 1.0;
+        double isVis = 1.0;
 
     
         if(!isVisible(shadowRay, sceneObjects)){
           isVis = 0.0;
+        
+          
           // L = new ColorRGB(1,0,0);
           // break;
+          
           
         }
 
@@ -127,7 +131,7 @@ public class Geometry {
     // if (!this->isVisible(shadowRay)) Vk = 0.0f;
     // else Vk = 1.0f;
 
-    return Ld.mult(1);
+    return Ld.mult(3);
 }
 
 public void setMaterial(Material material) {
@@ -140,16 +144,28 @@ public void setMaterial(Material material) {
 //VERKAR INTE FUNGERA 
 // på något sett så missar den intersecten eller något... 
 public boolean isVisible(Ray shadowRay, ArrayList<Geometry> sceneObjects ){
+  Vertex pointOnSphere = shadowRay.start.translate(shadowRay.dir);
+  
+  if (pointOnSphere.z<0 && this instanceof Sphere){
+   // System.out.println("hej");
+  }
 
-  Double distance = Math.abs(shadowRay.dir.vectorLength());
+  
+  double distance = Math.abs(shadowRay.dir.vectorLength());
 
-  Vertex intPoint = new Vertex();
-  Double minDist = 1000.0;
+  
+  
+  double minDist = 1000.0;
   shadowRay.dir = shadowRay.dir.norm();
+
+
+  
 
   for (int i = 0; i < sceneObjects.size(); i++) {
     Geometry obj = sceneObjects.get(i);
+    Vertex intPoint = new Vertex();
     //VI KANSKE SKA TA IN ETT NYTT VÄRDE RAY START?
+
       if (obj.checkIntersect(shadowRay.start, shadowRay, intPoint)){
         //System.out.println("vi intersektar med något");
         
@@ -160,8 +176,10 @@ public boolean isVisible(Ray shadowRay, ArrayList<Geometry> sceneObjects ){
 
   }
 
+ 
 
-  if (minDist+0.5 <distance) 
+
+  if (minDist+0.005 < distance) 
   {
     
     return false;}

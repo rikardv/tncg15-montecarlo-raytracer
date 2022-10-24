@@ -111,7 +111,7 @@ public class MollerTrumbore {
     Sphere inSphere,
     Vertex outIntersectionPoint
   ){
-
+   
     double b, c, x, d1, d2, d;
 
     double c1, c2, c3, arg;
@@ -123,6 +123,8 @@ public class MollerTrumbore {
     // c1 = D dot D
     // c2 = 2D * (S-C)
     // c3 = (S-C) * (SC)
+
+    rayVector.dir = rayVector.dir.norm();
 
     c1 = Maths.dotProduct(rayVector.dir, rayVector.dir);
     c2 = Maths.dotProduct(rayVector.dir.Multiply(2), rayVector.start.CreateEdge(inSphere.centerPosition));
@@ -143,16 +145,17 @@ public class MollerTrumbore {
 
     // One solution
     else if (arg < EPSILON) {
-       d1 = -(c2 / (2.0 * c1)) + Math.sqrt(arg);
+       d1 = -(c2 + Math.sqrt(arg)) / (2.0 * c1);
        d = d1;
-       outIntersectionPoint = rayVector.start.translate(rayVector.dir).mult(d);
+       // outIntersectionPoint = rayVector.start.translate(rayVector.dir).mult(d);
+       outIntersectionPoint.set(rayVector.start.translate(rayVector.dir).mult(d));
        return true;
     };
 
     
     // Two solutions
-    d1 = -(c2 / (2.0 * c1)) + Math.sqrt(arg);
-	  d2 = -(c2 / (2.0 * c1)) - Math.sqrt(arg);
+    d1 = -(c2 + Math.sqrt(arg)) / (2.0 * c1);
+	  d2 =-(c2 - Math.sqrt(arg)) / (2.0 * c1);
 
     if (d2 > d1) {
       d = d1;
@@ -171,7 +174,8 @@ public class MollerTrumbore {
 
     //Check with distance if we got a hit
 	  if (d < EPSILON || d > 1000.0f) return false;
-	  outIntersectionPoint = rayVector.start.translate(rayVector.dir).mult(d);
+	  // outIntersectionPoint = rayVector.start.translate(rayVector.dir).mult(d);
+    outIntersectionPoint.set(rayVector.start.translate(rayVector.dir).mult(d));
 
     Vector3d normal = outIntersectionPoint.CreateEdge(inSphere.centerPosition).norm();
     inSphere.setNormal((normal));

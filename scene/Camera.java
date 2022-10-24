@@ -58,14 +58,16 @@ public class Camera {
 
   public void followRay(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint){
 
-    //testing max value of direct light
-    ColorRGB test = new ColorRGB();
 
             for (int i = 0; i < scene.sceneObjects.size(); i++) {
           Geometry obj = scene.sceneObjects.get(i);
+          Vertex outPoint = new Vertex();
           if (
-            obj.checkIntersect(currentPoint, currentRay, outIntersectionPoint)
+            obj.checkIntersect(currentPoint, currentRay, outPoint)
           ) {
+
+            //skickar vidare intersectionpointen
+            outIntersectionPoint.set(outPoint);
 
             // if (obj instanceof Sphere) {
             //   currentRay.rayColor = obj.color;
@@ -82,19 +84,25 @@ public class Camera {
             if (obj.material.type == MaterialType.MIRROR) {
               Ray reflectedRay = obj.bounceRay(
                 currentRay,
-                outIntersectionPoint
+                outPoint
               );
 
-              Vertex pointOfReflection = outIntersectionPoint;
+              Vertex pointOfReflection = outPoint;
 
-              followRay(scene, pointOfReflection, reflectedRay, outIntersectionPoint);
+              followRay(scene, pointOfReflection, reflectedRay, outPoint);
             }
             
 
             else {
-              currentRay.rayColor = obj.calculateDirectLight(scene.light, outIntersectionPoint, 20,scene.sceneObjects);
-              if(currentRay.rayColor.r > test.r){
-                test = new ColorRGB(currentRay.rayColor.r,currentRay.rayColor.g,currentRay.rayColor.b);
+              
+              if (obj instanceof Sphere) {
+                Vector3d normalizedIntersect = obj.getNormal(outPoint);
+          
+                currentRay.rayColor = new ColorRGB(Math.abs(normalizedIntersect.x),0,0);
+                // outIntersectionPoint
+              }
+              else{
+              currentRay.rayColor = obj.calculateDirectLight(scene.light, outPoint, 1,scene.sceneObjects);
               }
             }
            

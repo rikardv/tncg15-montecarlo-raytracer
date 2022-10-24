@@ -114,9 +114,9 @@ public class Scene {
   );
 
   Sphere firstSphere = new Sphere(
-    new Vertex(9,0,-3.5),
-    3.0,
-    1,1,1
+    new Vertex(11,0,0),
+    4.0,
+    0,0,0
   );
 
   Rectangle lightBlock = new Rectangle(
@@ -162,11 +162,10 @@ public class Scene {
     sceneObjects.add(light);
 
     // firstSphere.setReflectionCoeff(1.0);
-    Material lambertianMaterial = new Material(0.5f, 1,1, MaterialType.LAMBERTIAN);
-    firstSphere.setMaterial(lambertianMaterial);
-    //sceneObjects.add(firstSphere);
+  
+    sceneObjects.add(firstSphere);
     lightBlock.setMaterial(mirror);
-    sceneObjects.add(lightBlock);
+    //sceneObjects.add(lightBlock);
     
   }
 
