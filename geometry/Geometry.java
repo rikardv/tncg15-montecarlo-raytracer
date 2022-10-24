@@ -17,14 +17,13 @@ public class Geometry {
 
   public Material material = new Material();
 
-  public boolean checkIntersect(
+  public double checkIntersect(
     Vertex rayOrigin,
-    Ray rayVector,
-    Vertex outIntersectionPoint
+    Ray rayVector
   ) {
     System.out.print("Something went wrong: checkIntersect not overridden");
 
-    return false;
+    return -1.0;
   }
 
   public Ray bounceRay(Ray rayIn, Vertex intersectionPoint) {
@@ -99,14 +98,14 @@ public class Geometry {
         // cos(omegax) = Nx * di / ||di||
         // cos(omegay) = Ny * di / ||di||
         // TODO - fixa normal för triangel
-        // double cosOmegax = Maths.dotProduct(di.Multiply(1 / abs_di), this instanceof Sphere ? this.getNormal(pointOFIntersection) : this.getNormal());
-        // double cosOmegay = -Maths.dotProduct(di.Multiply(1 / abs_di), LightSource.normal);
+        double cosOmegax = Maths.dotProduct(di.Multiply(1 / abs_di), this instanceof Sphere ? this.getNormal(pointOFIntersection) : this.getNormal());
+        double cosOmegay = -Maths.dotProduct(di.Multiply(1 / abs_di), LightSource.normal);
 
         //Testar med dot approachen, här är den gamla ifall vi vill gå tillbaka till den :P 
        // L = L.add(this.color.mult((cosOmegax * cosOmegay) / (abs_di * abs_di)));
 
        //Något är lurt 
-       this.setNormal(this instanceof Sphere ? this.getNormal(pointOFIntersection).invers() : this.getNormal());
+       this.setNormal(this instanceof Sphere ? this.getNormal(pointOFIntersection) : this.getNormal());
        Ray shadowRay = new Ray(yi,di);
        
         double isVis = 1.0;
@@ -122,7 +121,7 @@ public class Geometry {
           
         }
 
-           L= L.add(this.color.mult(((Maths.dotProduct(di, normal.invers())) / (abs_di * abs_di))* isVis));
+           L= L.add(this.color.mult(((cosOmegax * cosOmegay) / (abs_di * abs_di))* isVis));
        
     }
 
@@ -131,7 +130,7 @@ public class Geometry {
     // if (!this->isVisible(shadowRay)) Vk = 0.0f;
     // else Vk = 1.0f;
 
-    return Ld.mult(3);
+    return Ld.mult(20);
 }
 
 public void setMaterial(Material material) {
@@ -163,10 +162,15 @@ public boolean isVisible(Ray shadowRay, ArrayList<Geometry> sceneObjects ){
 
   for (int i = 0; i < sceneObjects.size(); i++) {
     Geometry obj = sceneObjects.get(i);
-    Vertex intPoint = new Vertex();
+    double t = obj.checkIntersect(shadowRay.start, shadowRay);
     //VI KANSKE SKA TA IN ETT NYTT VÄRDE RAY START?
 
-      if (obj.checkIntersect(shadowRay.start, shadowRay, intPoint)){
+      if (t > 0.0){
+        Vertex intPoint = new Vertex(shadowRay.start);
+        intPoint.add(shadowRay.dir.x * t,
+            shadowRay.dir.y * t,
+            shadowRay.dir.z * t
+          );
         //System.out.println("vi intersektar med något");
         
         if(Math.abs(intPoint.CreateEdge(shadowRay.start).vectorLength()) < minDist){

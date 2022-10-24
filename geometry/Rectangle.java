@@ -58,15 +58,13 @@ public class Rectangle extends Geometry {
     }
 
     @Override
-    public boolean checkIntersect(
+    public double checkIntersect(
             Vertex rayOrigin,
-            Ray ray,
-            Vertex outIntersectionPoint) {
+            Ray ray) {
         return MollerTrumbore.rayIntersectsRectangle(
                 rayOrigin,
                 ray,
-                this,
-                outIntersectionPoint);
+                this);
     }
 
     @Override

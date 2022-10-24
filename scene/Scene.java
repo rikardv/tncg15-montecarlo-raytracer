@@ -21,7 +21,7 @@ public class Scene {
     new Vertex(10, 6, -5),
     new Vertex(10, 6, 5),
     new Vertex(0, 6, 5),
-    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
+    1.0,1.0,1.0
   );
 
   Rectangle W2 = new Rectangle(
@@ -29,42 +29,42 @@ public class Scene {
     new Vertex(13, 0, -5),
     new Vertex(13, 0, 5),
     new Vertex(10, 6, 5),
-    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
+    1.0,1.0,1.0
   );
   Rectangle W3 = new Rectangle(
     new Vertex(13, 0, -5),
     new Vertex(10, -6, -5),
     new Vertex(10, -6, 5),
     new Vertex(13, 0, 5),
-    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
+    1.0,1.0,1.0
   );
   Rectangle W4 = new Rectangle(
     new Vertex(10, -6, -5),
     new Vertex(0, -6, -5),
     new Vertex(0, -6, 5),
     new Vertex(10, -6, 5),
-    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
+    1.0,1.0,1.0
   );
   Rectangle W5 = new Rectangle(
     new Vertex(0, -6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(-3, 0, 5),
     new Vertex(0, -6, 5),
-    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
+    1.0,1.0,1.0
   );
   Rectangle W6 = new Rectangle(
     new Vertex(-3, 0, -5),
     new Vertex(0, 6, -5),
     new Vertex(0, 6, 5),
     new Vertex(-3, 0, 5),
-    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
+    1.0,1.0,1.0
   );
   Rectangle test = new Rectangle(
     new Vertex(10, -1, -1),
     new Vertex(10, 1, -1),
     new Vertex(10, 1, 1),
     new Vertex(10, -1, 1),
-    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
+    1.0,1.0,1.0
   );
 
   /**
@@ -114,9 +114,9 @@ public class Scene {
   );
 
   Sphere firstSphere = new Sphere(
-    new Vertex(11,0,0),
-    4.0,
-    0,0,0
+    new Vertex(9,0,-1),
+    2.0,
+    1.0,1.0,1.0
   );
 
   Rectangle lightBlock = new Rectangle(

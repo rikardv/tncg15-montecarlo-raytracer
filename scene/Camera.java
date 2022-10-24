@@ -61,13 +61,21 @@ public class Camera {
 
             for (int i = 0; i < scene.sceneObjects.size(); i++) {
           Geometry obj = scene.sceneObjects.get(i);
-          Vertex outPoint = new Vertex();
+          double t = obj.checkIntersect(currentPoint, currentRay);
           if (
-            obj.checkIntersect(currentPoint, currentRay, outPoint)
+            t > 0.0
           ) {
 
+            Vertex outPoint = new Vertex(currentPoint);
+            outPoint.add(currentRay.dir.x * t,
+            currentRay.dir.y * t,
+            currentRay.dir.z * t
+          );
+
+
+
             //skickar vidare intersectionpointen
-            outIntersectionPoint.set(outPoint);
+            // outIntersectionPoint.set(outPoint);
 
             // if (obj instanceof Sphere) {
             //   currentRay.rayColor = obj.color;
@@ -95,15 +103,7 @@ public class Camera {
 
             else {
               
-              if (obj instanceof Sphere) {
-                Vector3d normalizedIntersect = obj.getNormal(outPoint);
-          
-                currentRay.rayColor = new ColorRGB(Math.abs(normalizedIntersect.x),0,0);
-                // outIntersectionPoint
-              }
-              else{
-              currentRay.rayColor = obj.calculateDirectLight(scene.light, outPoint, 1,scene.sceneObjects);
-              }
+              currentRay.rayColor = obj.calculateDirectLight(scene.light, outPoint, 10,scene.sceneObjects);
             }
            
             // System.out.println("Color of intersected oj r:"+ obj.color.r+ " g:" +
@@ -112,7 +112,7 @@ public class Camera {
           }
           // ray did not hit any geometry
           else {
-            
+
           }
         }
        // System.out.println("Max color from direct light = " + test.r);

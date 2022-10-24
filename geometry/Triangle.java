@@ -62,16 +62,14 @@ public class Triangle extends Geometry {
     return this.v3;
   }
 
-  public boolean checkIntersect(
+  public double checkIntersect(
     Vertex rayOrigin,
-    Ray rayVector,
-    Vertex outIntersectionPoint
+    Ray rayVector
   ) {
     return MollerTrumbore.rayIntersectsTriangle(
       rayOrigin,
       rayVector,
-      this,
-      outIntersectionPoint
+      this
     );
   }
 
