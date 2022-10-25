@@ -6,24 +6,24 @@ public class Ray {
   public Vector3d dir;
   public Ray parent = null;
   public Ray child = null;
-  public ColorRGB rayColor;
+  public ColorRGB radiance;
   public int depth;
 
   public Ray() {
-    this.rayColor = new ColorRGB();
+    this.radiance = new ColorRGB();
     this.start = new Vertex();
     this.dir = new Vector3d();
     this.depth = 0;
   }
 
   public Ray(Vertex start, Vector3d dir) {
-    this.rayColor = new ColorRGB();
+    this.radiance = new ColorRGB();
     this.start = new Vertex(start.x, start.y, start.z);
     this.dir = new Vector3d(dir.x, dir.y, dir.z);
   }
 
   public Ray(Vertex start, Vector3d dir, Ray Child) {
-    this.rayColor = new ColorRGB();
+    this.radiance = new ColorRGB();
     this.start = new Vertex(start.x, start.y, start.z);
     this.dir = new Vector3d(dir.x, dir.y, dir.z);
   }
@@ -32,7 +32,7 @@ public class Ray {
     this.child = child;
   }
 
-  public void setColor(double r,double g,double b) {
-    this.rayColor = new ColorRGB(r, g, b);
+  public void setRadiance(ColorRGB color) {
+    this.radiance = color;
   }
 }

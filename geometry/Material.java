@@ -1,5 +1,7 @@
 package geometry;
 
+import utils.ColorRGB;
+
 public class Material {
 
     public float reflectCoeff;
@@ -8,10 +10,25 @@ public class Material {
     public MaterialType type;
 
     public Material() {
-        this.reflectCoeff = 0.5f;
+        this.reflectCoeff = 0.7f;
         this.n = 1.0f;
         this.roughness = 1.0f;
         this.type = MaterialType.LAMBERTIAN;
+    }
+
+    public float getMaterialBRDF() {
+
+        switch (this.type) {
+            case LAMBERTIAN: 
+            return this.reflectCoeff / (float) Math.PI;
+            case MIRROR:
+            break;
+            case TRANSPARENT:
+            break;
+            default:
+            break;
+        }
+        return this.reflectCoeff / (float) Math.PI;
     }
 
 
