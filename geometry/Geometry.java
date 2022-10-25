@@ -110,7 +110,7 @@ public class Geometry {
       double isVis = 1.0;
 
       if (!isVisible(shadowRay, sceneObjects)) {
-        isVis = 0.0;
+        isVis = 1.0;
 
         // L = new ColorRGB(1,0,0);
         // break;
@@ -123,7 +123,7 @@ public class Geometry {
 
     float brdfCoeff = this.material.getMaterialBRDF();
 
-    Ld = L.mult((LightArea / shadowRays) * brdfCoeff);
+    Ld = L.mult((LightArea / (Math.PI * shadowRays)));
 
     // if (!this->isVisible(shadowRay)) Vk = 0.0f;
     // else Vk = 1.0f;
