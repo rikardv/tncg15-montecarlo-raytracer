@@ -4,5 +4,5 @@ public enum MaterialType {
     MIRROR,
     LAMBERTIAN,
     TRANSPARENT,
-    OREN_NAYAR
+    LIGHT_SOURCE
   }

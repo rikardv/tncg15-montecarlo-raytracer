@@ -15,13 +15,15 @@ import java.util.*;
 
 public class Scene {
 
-  //Rummet
+  /**
+   * Walls
+   */
   Rectangle W1 = new Rectangle(
     new Vertex(0, 6, -5),
     new Vertex(10, 6, -5),
     new Vertex(10, 6, 5),
     new Vertex(0, 6, 5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
 
   Rectangle W2 = new Rectangle(
@@ -36,35 +38,28 @@ public class Scene {
     new Vertex(10, -6, -5),
     new Vertex(10, -6, 5),
     new Vertex(13, 0, 5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
   Rectangle W4 = new Rectangle(
     new Vertex(10, -6, -5),
     new Vertex(0, -6, -5),
     new Vertex(0, -6, 5),
     new Vertex(10, -6, 5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
   Rectangle W5 = new Rectangle(
     new Vertex(0, -6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(-3, 0, 5),
     new Vertex(0, -6, 5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
   Rectangle W6 = new Rectangle(
     new Vertex(-3, 0, -5),
     new Vertex(0, 6, -5),
     new Vertex(0, 6, 5),
     new Vertex(-3, 0, 5),
-    1.0,1.0,1.0
-  );
-  Rectangle test = new Rectangle(
-    new Vertex(10, -1, -1),
-    new Vertex(10, 1, -1),
-    new Vertex(10, 1, 1),
-    new Vertex(10, -1, 1),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
 
   /**
@@ -75,19 +70,19 @@ public class Scene {
     new Vertex(0, 6, -5),
     new Vertex(0, -6, -5),
     new Vertex(10, -6, -5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
   Triangle Floor_W2 = new Triangle(
     new Vertex(0, 6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(0, -6, -5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
   Triangle Floor_W3 = new Triangle(
     new Vertex(10, -6, -5),
     new Vertex(13, 0, -5),
     new Vertex(10, 6, -5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
 
   /**
@@ -98,25 +93,29 @@ public class Scene {
     new Vertex(10, -6, 5),
     new Vertex(0, -6, 5),
     new Vertex(0, 6, 5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
   Triangle Roof_W2 = new Triangle(
     new Vertex(0, 6, 5),
     new Vertex(0, -6, 5),
     new Vertex(-3, 0, 5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
   Triangle Roof_W3 = new Triangle(
     new Vertex(10, 6, 5),
     new Vertex(13, 0, 5),
     new Vertex(10, -6, 5),
-    1.0,1.0,1.0
+    1.0,0.7,0.4
   );
+
+  /**
+   * External
+   */
 
   Sphere firstSphere = new Sphere(
     new Vertex(9,0,-1),
     2.0,
-    1.0,1.0,1.0
+    1.0,0,0
   );
 
   Rectangle lightBlock = new Rectangle(
@@ -124,48 +123,43 @@ public class Scene {
     new Vertex(10, -1, -1.5),
     new Vertex(10, 1, -4),
     new Vertex(8, 1, -1),
-    new Random().nextDouble(),new Random().nextDouble(),new Random().nextDouble()
+    1.0,1.0,1.0
   );
-
-  
 
   public Light light = new Light();
 
   public ArrayList<Geometry> sceneObjects = new ArrayList<Geometry>(100);
 
   public Scene() {
-    
-    sceneObjects.add(W4);
-    Material mirror = new Material(1.0f, 1, 1, MaterialType.MIRROR);
-   // W3.setMaterial(mirror);
-    // W3.setReflectionCoeff(9.0);
-    sceneObjects.add(W3);
 
-    
+    // Create materials for objects
+    Material mirror = new Material(1.0f, 1, 1, MaterialType.MIRROR);
+    Material lambertianMaterial = new Material(0.5f, 1, 1, MaterialType.LAMBERTIAN);    
+    Material lightMaterial = new Material(1.0f, 1, 1, MaterialType.LIGHT_SOURCE);
+
+
+    // Set materials
+    firstSphere.setMaterial(lambertianMaterial);
+    lightBlock.setMaterial(mirror);
+    light.setMaterial(lightMaterial);
+    W2.setReflectionCoeff(1.0);
+
+
+    // Add objects to scene
+    sceneObjects.add(light);
+    sceneObjects.add(firstSphere);
+    sceneObjects.add(W4);
+    sceneObjects.add(W3);
     sceneObjects.add(W2);
     sceneObjects.add(W1);
-    // sceneObjects.add(W4);
     sceneObjects.add(W5);
     sceneObjects.add(W6);
-    // floor.setReflectionCoeff(1.0);
-   
-   
-
     sceneObjects.add(Floor_W1);
     sceneObjects.add(Floor_W2);
     sceneObjects.add(Floor_W3);
-
-   sceneObjects.add(Roof_W1);
+    sceneObjects.add(Roof_W1);
     sceneObjects.add(Roof_W2);
     sceneObjects.add(Roof_W3);
-
-    sceneObjects.add(light);
-
-    // firstSphere.setReflectionCoeff(1.0);
-  
-    sceneObjects.add(firstSphere);
-    lightBlock.setMaterial(mirror);
-    //sceneObjects.add(lightBlock);
     
   }
 

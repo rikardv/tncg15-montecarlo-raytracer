@@ -49,127 +49,108 @@ public class Camera {
   public Camera() {
     height = 800;
     width = 800;
-    pixelGrid = new ArrayList<ColorRGB>(height*width);
+    pixelGrid = new ArrayList<ColorRGB>(height * width);
   }
 
   public Camera(int height, int width) {
-    pixelGrid = new ArrayList<ColorRGB>(height*width);
+    pixelGrid = new ArrayList<ColorRGB>(height * width);
   }
 
-  public void followRay(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint){
+  public ColorRGB traverseRayPath(Ray ray) {
+    while (ray.child != null) {
+      ray = ray.child;
+    }
+    return ray.radiance;
+  }
 
+  public void followRay(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint) {
 
-            for (int i = 0; i < scene.sceneObjects.size(); i++) {
-          Geometry obj = scene.sceneObjects.get(i);
-          double t = obj.checkIntersect(currentPoint, currentRay);
-          if (
-            t > 0.0
-          ) {
+    for (int i = 0; i < scene.sceneObjects.size(); i++) {
+      Geometry obj = scene.sceneObjects.get(i);
+      double t = obj.checkIntersect(currentPoint, currentRay);
+      if (t > 0.0) {
 
-            Vertex outPoint = new Vertex(currentPoint);
-            outPoint.add(currentRay.dir.x * t,
+        Vertex outPoint = new Vertex(currentPoint);
+        outPoint.add(currentRay.dir.x * t,
             currentRay.dir.y * t,
-            currentRay.dir.z * t
-          );
+            currentRay.dir.z * t);
 
-
-
-            //skickar vidare intersectionpointen
-            // outIntersectionPoint.set(outPoint);
-
-            // if (obj instanceof Sphere) {
-            //   currentRay.rayColor = obj.color;
-            //   return;
-            // }
-            //träffar vi ljus, Klart, Eller för djupt, KLART
-            if (obj.hitLight() || currentRay.depth > 5){
-              //test, vit pixel om den träffar ljuskällan inom 5 studs;
-              currentRay.rayColor = obj.color;
-              return;
-            }
-          
-            // Om vi får en studs
-            if (obj.material.type == MaterialType.MIRROR) {
-              Ray reflectedRay = obj.bounceRay(
-                currentRay,
-                outPoint
-              );
-
-              Vertex pointOfReflection = outPoint;
-
-              followRay(scene, pointOfReflection, reflectedRay, outPoint);
-            }
-            
-
-            else {
-              
-              currentRay.rayColor = obj.calculateDirectLight(scene.light, outPoint, 10,scene.sceneObjects);
-            }
-           
-            // System.out.println("Color of intersected oj r:"+ obj.color.r+ " g:" +
-            // obj.color.g + " b:" +obj.color.b);
-
-          }
-          // ray did not hit any geometry
-          else {
-
-          }
+        // We are done
+        if (currentRay.depth > 10) {
+          return;
         }
-       // System.out.println("Max color from direct light = " + test.r);
+
+        if (obj.material.type == MaterialType.LIGHT_SOURCE) {
+          ColorRGB light = new ColorRGB(1.0, 1.0, 1.0);
+          currentRay.setRadiance(light);
+          return;
+        }
+
+        // Compute direct light and store into ray
+        if (obj.material.type == MaterialType.LAMBERTIAN) {
+          ColorRGB directLight = obj.calculateDirectLight(scene.light, outPoint, 1,scene.sceneObjects);
+          currentRay.setRadiance(directLight);
+          return;
+        }
+
+        // Copy radiance from previous ray
+        else if (obj.material.type == MaterialType.MIRROR || obj.material.type == MaterialType.TRANSPARENT) {
+          ColorRGB prevRadiance = currentRay.child.radiance;
+          currentRay.setRadiance(prevRadiance);
+        }
+
+        Ray reflectedRay = obj.bounceRay(currentRay, outPoint);
+
+        Vertex pointOfReflection = outPoint;
+
+
+        followRay(scene, pointOfReflection, reflectedRay, outPoint);
+
+      }
+      // ray did not hit any geometry
+      else {
+        if (!(this instanceof Camera)){
+          System.out.println("Something went wrong: Ray did not hit any geometry");
+        }
+      }
+    }
   }
 
   public void Render(Scene scene) {
     File image = new File("renders/Image5.png");
     BufferedImage buffer = new BufferedImage(
-      width,
-      height,
-      BufferedImage.TYPE_INT_RGB
-    );
+        width,
+        height,
+        BufferedImage.TYPE_INT_RGB);
 
     for (int z = -height / 2; z < height / 2; z++) {
       for (int x = -width / 2; x < width / 2; x++) {
-        ColorRGB pixelColor = new ColorRGB();
 
         Vertex currentCameraVertex = new Vertex(
-          planeCenter.x,
-          planeCenter.y + (float) x / (width / 2),
-          planeCenter.z + (float) z / (height / 2)
-        );
+            planeCenter.x,
+            planeCenter.y + (float) x / (width / 2),
+            planeCenter.z + (float) z / (height / 2));
         Vector3d RayVector = currentCameraVertex.CreateEdge(eyePosition);
         Ray currentRay = new Ray(eyePosition, RayVector);
         Vertex outIntersectionPoint = new Vertex();
         Vertex currentPoint = eyePosition;
 
         followRay(scene, currentPoint, currentRay, outIntersectionPoint);
+        ColorRGB pixelColor = traverseRayPath(currentRay);
 
-        while(currentRay.child != null){
-          currentRay = currentRay.child;
-        }
-
-        if (currentRay.rayColor == null){
+        if (currentRay.radiance == null) {
           System.out.println("x");
         }
-        pixelColor = currentRay.rayColor;
 
         pixelColor.intColor();
-        
+
         Color myColour = new Color(pixelColor.ir, pixelColor.ig, pixelColor.ib);
         pixelGrid.add(pixelColor);
         int rgb = myColour.getRGB();
         buffer.setRGB(
-          (width - 1) - (x + width / 2),
-          (height - 1) - (z + height / 2),
-          rgb
-        );
-        // Scene[alla scene object];
-
-        // Scene.forEach(obj=> obj.checkintersect())
-
-        // Vertex för kameraplanspunkten = centrum kameraplan + x/(height/2)
-        // Vekorn blir då kameraplanspunkt -ögacoord
-
-        // sista steg
-        // buffer.setRGB(x, y, 'värde på pixel');
+            (width - 1) - (x + width / 2),
+            (height - 1) - (z + height / 2),
+            rgb);
       }
     }
 
@@ -180,32 +161,4 @@ public class Camera {
       System.exit(1);
     }
   }
-
-  
-
-  
-  // sudo för render
-  /*
-   * for (heigt)
-   * // for (int y = -height/2; z < height/2; y++){
-   * for (int x = -width/2; x < width/2; x++){
-   * ColorRGB pixelColor = new ColorRGB();
-   * Vertex CurrentCameraVertex = new Vertex(planeCenter.x+
-   * x/(width/2),0,planeCenter.z+ z/height/2);
-   * Vector3d RayVector = currentCameraVertex.sub(eyePosition);
-   *
-   * Scene[alla scene object];
-   *
-   * Scene.forEach(obj=> obj.checkintersect())
-   *
-   * Vertex för kameraplanspunkten = centrum kameraplan + x/(height/2)
-   * Vekorn blir då kameraplanspunkt -ögacoord
-   *
-   * sista steg
-   * buffer.setRGB(x, y, 'värde på pixel');
-   * }
-   * }
-   *
-   */
-
 }
