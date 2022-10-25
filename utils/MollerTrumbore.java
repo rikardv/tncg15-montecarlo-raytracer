@@ -4,7 +4,7 @@ import geometry.*;
 
 public class MollerTrumbore {
   // 9 nollor är idealt
-  private static final double EPSILON = 0.0000000001;
+  private static final double EPSILON = 0.000000001;
 
   public static double rayIntersectsTriangle(
       Vertex rayOrigin,

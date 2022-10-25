@@ -12,6 +12,8 @@ public class ColorRGB {
     this.b = b;
   }
 
+  
+
   public ColorRGB() {
     this.r = 0.0;
     this.g = 0.0;
@@ -48,6 +50,11 @@ public class ColorRGB {
     this.r = r;
     this.g = g;
     this.b = b;
+  }
+  public void set(ColorRGB newColor) {
+    this.r = newColor.r;
+    this.g = newColor.g;
+    this.b = newColor.b;
   }
 
   public ColorRGB mult(double mul) {

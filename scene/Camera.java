@@ -59,6 +59,18 @@ public class Camera {
 
   public ColorRGB computeRadianceFlow(Ray ray, Scene scene) {
 
+    if (ray.hitObj == null) {
+      ray.setRadiance(new ColorRGB(0, 0, 0));
+    }
+
+    else if (ray.hitObj.material.type == MaterialType.LIGHT_SOURCE) {
+      ray.setRadiance(new ColorRGB(1, 1, 1));
+    }
+
+    else if (ray.hitObj.material.type == MaterialType.LAMBERTIAN) {
+      ray.setRadiance(ray.hitObj.calculateDirectLight(scene.light, ray.intersectPoint, 1, scene.sceneObjects));
+    }
+
     while (ray.parent != null) {
 
       // ** If lambertian Material **
@@ -66,9 +78,10 @@ public class Camera {
       // Compute direct light
       // Sum these together
       // Store in ray and go to next parent
-      if (ray.hitObj.material.type == MaterialType.LAMBERTIAN) {
-        ColorRGB indirect = ray.hitObj.color.mult(ray.radiance).mult(ray.hitObj.material.reflectCoeff);
-        ColorRGB direct = ray.hitObj.calculateDirectLight(scene.light, ray.intersectPoint, 1, scene.sceneObjects);
+
+      if (ray.parent.hitObj.material.type == MaterialType.LAMBERTIAN) {
+        ColorRGB indirect = ray.parent.hitObj.color.mult(ray.radiance).mult(ray.hitObj.reflectCoeff);
+        ColorRGB direct = ray.parent.hitObj.calculateDirectLight(scene.light, ray.parent.intersectPoint, 1, scene.sceneObjects);
         ColorRGB sum = direct.add(indirect);
         ray.parent.setRadiance(sum);
       }
@@ -76,9 +89,9 @@ public class Camera {
       // ** If mirror **
       // Copy value from parent ray
       // Store in ray and go to next parent
-      if (ray.hitObj.material.type == MaterialType.MIRROR) {
-        ray.parent.setRadiance(ray.radiance);
-      }
+      // if (ray.hitObj.material.type == MaterialType.MIRROR) {
+      //   ray.parent.setRadiance(ray.radiance);
+      // }
 
       ray = ray.parent;
     }
@@ -86,7 +99,8 @@ public class Camera {
     return ray.radiance;
   }
 
-  public ColorRGB buildRayPath(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint) {
+  public Ray buildRayPath(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint) {
+    Ray finalRay = new Ray();
 
     for (int i = 0; i < scene.sceneObjects.size(); i++) {
       Geometry obj = scene.sceneObjects.get(i);
@@ -100,10 +114,13 @@ public class Camera {
 
         // We are done - traverse ray path and add upp light contribution
         if (currentRay.depth > 5 || obj.material.type == MaterialType.LIGHT_SOURCE) {
+
           currentRay.setHitObject(obj);
           currentRay.setIntersectionPoint(outPoint);
-          ColorRGB finalColor = computeRadianceFlow(currentRay, scene);
-          return finalColor;
+          finalRay = currentRay;
+          break;
+          
+          // return finalColor;
         }
 
         // Store hit info in ray and go to next
@@ -112,7 +129,7 @@ public class Camera {
           currentRay.setIntersectionPoint(outPoint);
           Ray reflectedRay = obj.bounceRay(currentRay, outPoint);
           reflectedRay.setParent(currentRay);
-          buildRayPath(scene, outPoint, reflectedRay, outPoint);
+          finalRay = buildRayPath(scene, outPoint, reflectedRay, outPoint);
         }
 
       }
@@ -120,14 +137,20 @@ public class Camera {
       else {
         if (!(this instanceof Camera)) {
           System.out.println("Something went wrong: Ray did not hit any geometry");
-        };
+        }
+        ;
       }
     }
-    return new ColorRGB();
+   
+
+    return finalRay;
+    // return new ColorRGB();
   }
 
+  
+
   public void Render(Scene scene) {
-    File image = new File("renders/Image5.png");
+    File image = new File("renders/Image6.png");
     BufferedImage buffer = new BufferedImage(
         width,
         height,
@@ -146,7 +169,17 @@ public class Camera {
         Vertex outIntersectionPoint = new Vertex();
         Vertex currentPoint = eyePosition;
 
-        ColorRGB pixelColor = buildRayPath(scene, currentPoint, currentRay, outIntersectionPoint);
+        ColorRGB pixelColor = new ColorRGB();
+
+        Ray tempRay = buildRayPath(scene, currentPoint, currentRay, outIntersectionPoint);
+      
+        pixelColor.set(computeRadianceFlow(tempRay, scene));
+
+        
+
+        if (pixelColor.r > 0) {
+          // System.out.println("slyna");
+        }
 
         if (currentRay.radiance == null) {
           System.out.println("x");

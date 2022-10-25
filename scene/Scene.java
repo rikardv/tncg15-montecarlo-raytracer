@@ -135,21 +135,21 @@ public class Scene {
     // Create materials for objects
     Material mirror = new Material(1.0f, 1, 1, MaterialType.MIRROR);
     Material lambertianMaterial = new Material(0.5f, 1, 1, MaterialType.LAMBERTIAN);    
-    Material lightMaterial = new Material(1.0f, 1, 1, MaterialType.LIGHT_SOURCE);
+    Material lightMaterial = new Material(0.0f, 1, 1, MaterialType.LIGHT_SOURCE);
 
 
     // Set materials
     firstSphere.setMaterial(lambertianMaterial);
     lightBlock.setMaterial(mirror);
     light.setMaterial(lightMaterial);
-    W2.setReflectionCoeff(1.0);
+    //W2.setReflectionCoeff(1.0);
 
-
+   
     // Add objects to scene
     sceneObjects.add(light);
-    // sceneObjects.add(firstSphere);
-    sceneObjects.add(W4);
-    sceneObjects.add(W3);
+    
+     sceneObjects.add(W4);
+     sceneObjects.add(W3);
     sceneObjects.add(W2);
     sceneObjects.add(W1);
     sceneObjects.add(W5);
@@ -160,6 +160,7 @@ public class Scene {
     sceneObjects.add(Roof_W1);
     sceneObjects.add(Roof_W2);
     sceneObjects.add(Roof_W3);
+    //sceneObjects.add(firstSphere);
     
   }
 
