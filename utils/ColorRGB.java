@@ -58,6 +58,14 @@ public class ColorRGB {
     );
   }
 
+  public ColorRGB mult(ColorRGB inRGB) {
+    return new ColorRGB(
+      this.r * inRGB.r,
+      this.g * inRGB.g,
+      this.b * inRGB.b
+    );
+  }
+
   public ColorRGB add(ColorRGB OtherColor) {
     return new ColorRGB(
       this.r + OtherColor.r,

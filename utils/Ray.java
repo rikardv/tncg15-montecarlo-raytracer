@@ -1,5 +1,7 @@
 package utils;
 
+import geometry.*;
+
 public class Ray {
 
   public Vertex start;
@@ -8,6 +10,8 @@ public class Ray {
   public Ray child = null;
   public ColorRGB radiance;
   public int depth;
+  public Geometry hitObj;
+  public Vertex intersectPoint;
 
   public Ray() {
     this.radiance = new ColorRGB();
@@ -32,7 +36,19 @@ public class Ray {
     this.child = child;
   }
 
+  public void setParent(Ray parent) {
+    this.parent = parent;
+  }
+
   public void setRadiance(ColorRGB color) {
     this.radiance = color;
+  }
+
+  public void setHitObject(Geometry hitObj) {
+    this.hitObj = hitObj;
+  }
+
+  public void setIntersectionPoint(Vertex intersect) {
+    this.intersectPoint = intersect;
   }
 }

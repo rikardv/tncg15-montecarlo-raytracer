@@ -147,7 +147,7 @@ public class Scene {
 
     // Add objects to scene
     sceneObjects.add(light);
-    sceneObjects.add(firstSphere);
+    // sceneObjects.add(firstSphere);
     sceneObjects.add(W4);
     sceneObjects.add(W3);
     sceneObjects.add(W2);
