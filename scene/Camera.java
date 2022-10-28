@@ -5,11 +5,12 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import utils.*;
 
-public class Camera {
+public class Camera extends Thread {
 
   Vertex eyePosition = new Vertex(-1, 0.0, 0);
   double dist2Display;
@@ -59,6 +60,10 @@ public class Camera {
 
   public ColorRGB computeRadianceFlow(Ray ray, Scene scene) {
 
+    if (ray.hitObj instanceof Sphere) {
+      // System.out.println("hej");
+    }
+
     if (ray.hitObj == null) {
       ray.setRadiance(new ColorRGB(0, 0, 0));
     }
@@ -68,7 +73,9 @@ public class Camera {
     }
 
     else if (ray.hitObj.material.type == MaterialType.LAMBERTIAN) {
-      ray.setRadiance(ray.hitObj.calculateDirectLight(scene.light, ray.intersectPoint, 1, scene.sceneObjects));
+      if (ray.hitObj instanceof Sphere) {
+        ray.setRadiance(ray.hitObj.calculateDirectLight(scene.light, ray.intersectPoint, 2, scene.sceneObjects));
+      }
     }
 
     while (ray.parent != null) {
@@ -80,18 +87,24 @@ public class Camera {
       // Store in ray and go to next parent
 
       if (ray.parent.hitObj.material.type == MaterialType.LAMBERTIAN) {
-        ColorRGB indirect = ray.parent.hitObj.color.mult(ray.radiance).mult(ray.hitObj.reflectCoeff);
-        ColorRGB direct = ray.parent.hitObj.calculateDirectLight(scene.light, ray.parent.intersectPoint, 1, scene.sceneObjects);
+
+        ColorRGB indirect = new ColorRGB();
+
+        indirect = ray.parent.hitObj.color.mult(ray.radiance).mult(ray.hitObj.reflectCoeff);
+
+        ColorRGB direct = ray.parent.hitObj.calculateDirectLight(scene.light, ray.parent.intersectPoint, 2,
+            scene.sceneObjects);
         ColorRGB sum = direct.add(indirect);
         ray.parent.setRadiance(sum);
+
       }
 
       // ** If mirror **
       // Copy value from parent ray
       // Store in ray and go to next parent
-      // if (ray.hitObj.material.type == MaterialType.MIRROR) {
-      //   ray.parent.setRadiance(ray.radiance);
-      // }
+      if (ray.parent.hitObj.material.type == MaterialType.MIRROR) {
+        ray.parent.setRadiance(ray.radiance);
+      }
 
       ray = ray.parent;
     }
@@ -101,6 +114,8 @@ public class Camera {
 
   public Ray buildRayPath(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint) {
     Ray finalRay = new Ray();
+    Ray reflectedRay = new Ray();
+    double P = 0.25;
 
     for (int i = 0; i < scene.sceneObjects.size(); i++) {
       Geometry obj = scene.sceneObjects.get(i);
@@ -112,14 +127,17 @@ public class Camera {
             currentRay.dir.y * t,
             currentRay.dir.z * t);
 
+         double random = new Random().nextDouble();
         // We are done - traverse ray path and add upp light contribution
-        if (currentRay.depth > 5 || obj.material.type == MaterialType.LIGHT_SOURCE) {
+        if (((currentRay.depth > 5  && random < P)|| obj.material.type == MaterialType.LIGHT_SOURCE )
+            && obj.material.type != MaterialType.MIRROR) {
+
 
           currentRay.setHitObject(obj);
           currentRay.setIntersectionPoint(outPoint);
           finalRay = currentRay;
           break;
-          
+
           // return finalColor;
         }
 
@@ -127,7 +145,11 @@ public class Camera {
         else {
           currentRay.setHitObject(obj);
           currentRay.setIntersectionPoint(outPoint);
-          Ray reflectedRay = obj.bounceRay(currentRay, outPoint);
+          if (currentRay.depth > 5  && random > P) {
+            reflectedRay = obj.getRandomDirection(currentRay, outPoint);
+          } else {
+            reflectedRay = obj.bounceRay(currentRay, outPoint);
+          }
           reflectedRay.setParent(currentRay);
           finalRay = buildRayPath(scene, outPoint, reflectedRay, outPoint);
         }
@@ -141,13 +163,10 @@ public class Camera {
         ;
       }
     }
-   
 
     return finalRay;
     // return new ColorRGB();
   }
-
-  
 
   public void Render(Scene scene) {
     File image = new File("renders/Image6.png");
@@ -172,9 +191,12 @@ public class Camera {
         ColorRGB pixelColor = new ColorRGB();
 
         Ray tempRay = buildRayPath(scene, currentPoint, currentRay, outIntersectionPoint);
-      
-        pixelColor.set(computeRadianceFlow(tempRay, scene));
 
+        pixelColor.set(computeRadianceFlow(tempRay, scene));
+        pixelColor = pixelColor.mult(10);
+        if (pixelColor.r >1||pixelColor.g >1||pixelColor.b >1){
+          //System.out.println("walla det är större än 1 jao ");
+        }
         
 
         if (pixelColor.r > 0) {
