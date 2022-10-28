@@ -23,7 +23,7 @@ public class Scene {
     new Vertex(10, 6, -5),
     new Vertex(10, 6, 5),
     new Vertex(0, 6, 5),
-    1.0,0.7,0.4
+    .0,1.0,0.4
   );
 
   Rectangle W2 = new Rectangle(
@@ -38,21 +38,21 @@ public class Scene {
     new Vertex(10, -6, -5),
     new Vertex(10, -6, 5),
     new Vertex(13, 0, 5),
-    1.0,0.7,0.4
+    0.7,0.0,0.0
   );
   Rectangle W4 = new Rectangle(
     new Vertex(10, -6, -5),
     new Vertex(0, -6, -5),
     new Vertex(0, -6, 5),
     new Vertex(10, -6, 5),
-    1.0,0.7,0.4
+    0.0,0.0,0.7
   );
   Rectangle W5 = new Rectangle(
     new Vertex(0, -6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(-3, 0, 5),
     new Vertex(0, -6, 5),
-    1.0,0.7,0.4
+    1.0,0.7,1.0
   );
   Rectangle W6 = new Rectangle(
     new Vertex(-3, 0, -5),
@@ -70,19 +70,19 @@ public class Scene {
     new Vertex(0, 6, -5),
     new Vertex(0, -6, -5),
     new Vertex(10, -6, -5),
-    1.0,0.7,0.4
+    1.0,1.0,1.0
   );
   Triangle Floor_W2 = new Triangle(
     new Vertex(0, 6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(0, -6, -5),
-    1.0,0.7,0.4
+    1.0,1.0,1.0
   );
   Triangle Floor_W3 = new Triangle(
     new Vertex(10, -6, -5),
     new Vertex(13, 0, -5),
     new Vertex(10, 6, -5),
-    1.0,0.7,0.4
+    1.0,1.0,1.0
   );
 
   /**
@@ -115,7 +115,7 @@ public class Scene {
   Sphere firstSphere = new Sphere(
     new Vertex(9,0,-1),
     2.0,
-    1.0,0,0
+    1.0,1.0,1.0
   );
 
   Rectangle lightBlock = new Rectangle(
@@ -139,7 +139,7 @@ public class Scene {
 
 
     // Set materials
-    firstSphere.setMaterial(lambertianMaterial);
+   //firstSphere.setMaterial(lambertianMaterial);
     lightBlock.setMaterial(mirror);
     light.setMaterial(lightMaterial);
     //W2.setReflectionCoeff(1.0);
@@ -150,6 +150,7 @@ public class Scene {
     
      sceneObjects.add(W4);
      sceneObjects.add(W3);
+     
     sceneObjects.add(W2);
     sceneObjects.add(W1);
     sceneObjects.add(W5);
@@ -160,7 +161,9 @@ public class Scene {
     sceneObjects.add(Roof_W1);
     sceneObjects.add(Roof_W2);
     sceneObjects.add(Roof_W3);
-    //sceneObjects.add(firstSphere);
+    sceneObjects.add(firstSphere);
+    //firstSphere.setReflectionCoeff(0.6);
+    //sceneObjects.add(lightBlock);
     
   }
 

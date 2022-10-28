@@ -78,22 +78,6 @@ public class Triangle extends Geometry {
     return normal.norm();
   }
 
-  @Override
-  public Ray bounceRay(Ray rayIn, Vertex intersectionPoint) {
-    //räkna på papper och gör en test på bara funktionen
-    Vertex start = intersectionPoint;
-
-    normal = getNormal();
-    // R = L - 2(N dot L)N
-
-    double NdotL = 2 * Maths.dotProduct(rayIn.dir.norm(), normal.norm());
-    Vector3d R = (rayIn.dir.norm()).sub(normal.norm().Multiply(NdotL));
-    Ray rayOut = new Ray(start, R, rayIn);
-
-    return rayOut;
-
-    
-  }
 
   @Override
     public boolean hitLight() {

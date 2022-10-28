@@ -26,9 +26,18 @@ public class Geometry {
   }
 
   public Ray bounceRay(Ray rayIn, Vertex intersectionPoint) {
-    System.out.println("Something went wrong: bounceray not overriden");
+    // räkna på papper och gör en test på bara funktionen
+    Vertex start = intersectionPoint;
 
-    return new Ray();
+    normal = getNormal();
+    // R = L - 2(N dot L)N
+
+    double NdotL = 2 * Maths.dotProduct(rayIn.dir.norm(), normal.norm());
+    Vector3d R = (rayIn.dir.norm()).sub(normal.norm().Multiply(NdotL));
+    Ray rayOut = new Ray(start, R);
+    // rayIn.setChild(rayOut);
+    rayOut.depth = rayIn.depth + 1;
+    return rayOut;
   }
 
   public Vector3d getNormal() {
@@ -110,7 +119,7 @@ public class Geometry {
       double isVis = 1.0;
 
       if (!isVisible(shadowRay, sceneObjects)) {
-        isVis = 1.0;
+        isVis = 0.0;
 
         // L = new ColorRGB(1,0,0);
         // break;
@@ -128,7 +137,7 @@ public class Geometry {
     // if (!this->isVisible(shadowRay)) Vk = 0.0f;
     // else Vk = 1.0f;
 
-    return Ld.mult(20);
+    return Ld.mult(1);
   }
 
   public void setMaterial(Material material) {
@@ -178,5 +187,25 @@ public class Geometry {
     }
 
     return true;
+  }
+
+  public Ray getRandomDirection(Ray rayIn, Vertex intersectionPoint) {
+    Random rand = new Random();
+    double yi = rand.nextDouble();
+    double azimuth = (2 * Math.PI) / (yi);
+    double inclination = Math.acos(Math.sqrt(rand.nextDouble()));
+    Vector3d N = this instanceof Sphere ? getNormal(intersectionPoint) : getNormal();
+
+    Vector3d randomNormal = new Vector3d(rand.nextDouble()*N.x, rand.nextDouble()*N.y, rand.nextDouble()*N.z).norm();
+
+    
+
+    if (azimuth <= 2 * Math.PI) {
+      // don't know how to handle this case yet
+    }
+    Ray rayOut = new Ray(intersectionPoint, randomNormal);
+    rayOut.depth = rayIn.depth + 1;
+
+    return rayOut;
   }
 }
