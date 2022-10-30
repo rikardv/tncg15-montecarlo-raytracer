@@ -60,22 +60,18 @@ public class Camera extends Thread {
 
   public ColorRGB computeRadianceFlow(Ray ray, Scene scene) {
 
-    if (ray.hitObj instanceof Sphere) {
-      // System.out.println("hej");
-    }
 
     if (ray.hitObj == null) {
       ray.setRadiance(new ColorRGB(0, 0, 0));
     }
 
     else if (ray.hitObj.material.type == MaterialType.LIGHT_SOURCE) {
-      ray.setRadiance(new ColorRGB(1, 1, 1));
+      ray.setRadiance(new ColorRGB(1.0, 1.0, 1.0));
     }
 
     else if (ray.hitObj.material.type == MaterialType.LAMBERTIAN) {
-      if (ray.hitObj instanceof Sphere) {
-        ray.setRadiance(ray.hitObj.calculateDirectLight(scene.light, ray.intersectPoint, 2, scene.sceneObjects));
-      }
+  
+        ray.setRadiance(ray.hitObj.calculateDirectLight(scene.light, ray.intersectPoint, 10, scene.sceneObjects));
     }
 
     while (ray.parent != null) {
@@ -88,9 +84,8 @@ public class Camera extends Thread {
 
       if (ray.parent.hitObj.material.type == MaterialType.LAMBERTIAN) {
 
-        ColorRGB indirect = new ColorRGB();
+        ColorRGB indirect = ray.parent.hitObj.color.mult(ray.radiance).mult(ray.hitObj.material.reflectCoeff);
 
-        indirect = ray.parent.hitObj.color.mult(ray.radiance).mult(ray.hitObj.reflectCoeff);
 
         ColorRGB direct = ray.parent.hitObj.calculateDirectLight(scene.light, ray.parent.intersectPoint, 2,
             scene.sceneObjects);
@@ -115,7 +110,7 @@ public class Camera extends Thread {
   public Ray buildRayPath(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint) {
     Ray finalRay = new Ray();
     Ray reflectedRay = new Ray();
-    double P = 0.25;
+    double P = 0.15;
 
     for (int i = 0; i < scene.sceneObjects.size(); i++) {
       Geometry obj = scene.sceneObjects.get(i);
@@ -127,14 +122,18 @@ public class Camera extends Thread {
             currentRay.dir.y * t,
             currentRay.dir.z * t);
 
-         double random = new Random().nextDouble();
+        currentRay.setHitObject(obj);
+        currentRay.setIntersectionPoint(outPoint);
+        if (obj.material.type == MaterialType.LAMBERTIAN) {
+          reflectedRay = obj.getRandomDirection(currentRay, outPoint);
+        }
+
+        else {
+          reflectedRay = obj.bounceRay(currentRay, outPoint);
+        }
         // We are done - traverse ray path and add upp light contribution
-        if (((currentRay.depth > 5  && random < P)|| obj.material.type == MaterialType.LIGHT_SOURCE )
+        if (((currentRay.depth > 5) || obj.material.type == MaterialType.LIGHT_SOURCE)
             && obj.material.type != MaterialType.MIRROR) {
-
-
-          currentRay.setHitObject(obj);
-          currentRay.setIntersectionPoint(outPoint);
           finalRay = currentRay;
           break;
 
@@ -143,13 +142,6 @@ public class Camera extends Thread {
 
         // Store hit info in ray and go to next
         else {
-          currentRay.setHitObject(obj);
-          currentRay.setIntersectionPoint(outPoint);
-          if (currentRay.depth > 5  && random > P) {
-            reflectedRay = obj.getRandomDirection(currentRay, outPoint);
-          } else {
-            reflectedRay = obj.bounceRay(currentRay, outPoint);
-          }
           reflectedRay.setParent(currentRay);
           finalRay = buildRayPath(scene, outPoint, reflectedRay, outPoint);
         }
@@ -194,10 +186,7 @@ public class Camera extends Thread {
 
         pixelColor.set(computeRadianceFlow(tempRay, scene));
         pixelColor = pixelColor.mult(10);
-        if (pixelColor.r >1||pixelColor.g >1||pixelColor.b >1){
-          //System.out.println("walla det är större än 1 jao ");
-        }
-        
+
 
         if (pixelColor.r > 0) {
           // System.out.println("slyna");

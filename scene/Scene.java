@@ -135,7 +135,7 @@ public class Scene {
     // Create materials for objects
     Material mirror = new Material(1.0f, 1, 1, MaterialType.MIRROR);
     Material lambertianMaterial = new Material(0.5f, 1, 1, MaterialType.LAMBERTIAN);    
-    Material lightMaterial = new Material(0.0f, 1, 1, MaterialType.LIGHT_SOURCE);
+    Material lightMaterial = new Material(1.0f, 1, 1, MaterialType.LIGHT_SOURCE);
 
 
     // Set materials
