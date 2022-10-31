@@ -61,6 +61,10 @@ public class Camera extends Thread {
   public ColorRGB computeRadianceFlow(Ray ray, Scene scene) {
 
 
+    int depth = ray.depth;
+
+    double scalingFactor = 1.0;
+
     if (ray.hitObj == null) {
       ray.setRadiance(new ColorRGB(0, 0, 0));
     }
@@ -70,8 +74,7 @@ public class Camera extends Thread {
     }
 
     else if (ray.hitObj.material.type == MaterialType.LAMBERTIAN) {
-  
-        ray.setRadiance(ray.hitObj.calculateDirectLight(scene.light, ray.intersectPoint, 10, scene.sceneObjects));
+      ray.setRadiance(ray.hitObj.calculateDirectLight(scene.light, ray.intersectPoint, 5, scene.sceneObjects));
     }
 
     while (ray.parent != null) {
@@ -82,17 +85,15 @@ public class Camera extends Thread {
       // Sum these together
       // Store in ray and go to next parent
 
-      if (ray.parent.hitObj.material.type == MaterialType.LAMBERTIAN) {
 
         ColorRGB indirect = ray.parent.hitObj.color.mult(ray.radiance).mult(ray.hitObj.material.reflectCoeff);
 
-
-        ColorRGB direct = ray.parent.hitObj.calculateDirectLight(scene.light, ray.parent.intersectPoint, 2,
+        ColorRGB direct = ray.parent.hitObj.calculateDirectLight(scene.light, ray.parent.intersectPoint, 5,
             scene.sceneObjects);
         ColorRGB sum = direct.add(indirect);
         ray.parent.setRadiance(sum);
 
-      }
+
 
       // ** If mirror **
       // Copy value from parent ray
@@ -104,13 +105,16 @@ public class Camera extends Thread {
       ray = ray.parent;
     }
 
-    return ray.radiance;
+    scalingFactor = depth > 0 ? (1 / (double) depth) : 1;
+
+    ColorRGB scaled = ray.radiance.mult(scalingFactor);
+
+    return scaled;
   }
 
   public Ray buildRayPath(Scene scene, Vertex currentPoint, Ray currentRay, Vertex outIntersectionPoint) {
     Ray finalRay = new Ray();
     Ray reflectedRay = new Ray();
-    double P = 0.15;
 
     for (int i = 0; i < scene.sceneObjects.size(); i++) {
       Geometry obj = scene.sceneObjects.get(i);
@@ -124,13 +128,6 @@ public class Camera extends Thread {
 
         currentRay.setHitObject(obj);
         currentRay.setIntersectionPoint(outPoint);
-        if (obj.material.type == MaterialType.LAMBERTIAN) {
-          reflectedRay = obj.getRandomDirection(currentRay, outPoint);
-        }
-
-        else {
-          reflectedRay = obj.bounceRay(currentRay, outPoint);
-        }
         // We are done - traverse ray path and add upp light contribution
         if (((currentRay.depth > 5) || obj.material.type == MaterialType.LIGHT_SOURCE)
             && obj.material.type != MaterialType.MIRROR) {
@@ -142,6 +139,13 @@ public class Camera extends Thread {
 
         // Store hit info in ray and go to next
         else {
+          if (obj.material.type == MaterialType.LAMBERTIAN) {
+            reflectedRay = obj.getRandomDirection(currentRay, outPoint);
+          }
+  
+          else {
+            reflectedRay = obj.bounceRay(currentRay, outPoint);
+          }
           reflectedRay.setParent(currentRay);
           finalRay = buildRayPath(scene, outPoint, reflectedRay, outPoint);
         }
@@ -166,6 +170,8 @@ public class Camera extends Thread {
         width,
         height,
         BufferedImage.TYPE_INT_RGB);
+    double highest_value = 0.0;
+    int counter = 0;
 
     for (int z = -height / 2; z < height / 2; z++) {
 
@@ -184,27 +190,44 @@ public class Camera extends Thread {
 
         Ray tempRay = buildRayPath(scene, currentPoint, currentRay, outIntersectionPoint);
 
-        pixelColor.set(computeRadianceFlow(tempRay, scene));
-        pixelColor = pixelColor.mult(10);
+        ColorRGB calcColor = computeRadianceFlow(tempRay, scene);
 
+        pixelColor.set(calcColor);
 
-        if (pixelColor.r > 0) {
-          // System.out.println("slyna");
+        if (pixelColor.r > highest_value) {
+          highest_value = pixelColor.r;
         }
 
-        if (currentRay.radiance == null) {
-          System.out.println("x");
+        if (pixelColor.g > highest_value) {
+          highest_value = pixelColor.g;
         }
 
-        pixelColor.intColor();
+        if (pixelColor.b > highest_value) {
+          highest_value = pixelColor.b;
+        }
 
-        Color myColour = new Color(pixelColor.ir, pixelColor.ig, pixelColor.ib);
         pixelGrid.add(pixelColor);
-        int rgb = myColour.getRGB();
+      }
+
+    }
+
+    System.out.println("Highest value: " + highest_value);
+
+    for (int z = -height / 2; z < height / 2; z++) {
+      for (int x = -width / 2; x < width / 2; x++) {
+
+        ColorRGB normalized_color = pixelGrid.get(counter).mult(1.0 / highest_value);
+
+        // normalized_color = normalized_color.mult(10);
+        normalized_color.intColor();
+        Color formattedColor = new Color(normalized_color.ir, normalized_color.ig, normalized_color.ib);
+        int rgb = formattedColor.getRGB();
+
         buffer.setRGB(
             (width - 1) - (x + width / 2),
             (height - 1) - (z + height / 2),
             rgb);
+        counter++;
       }
     }
 

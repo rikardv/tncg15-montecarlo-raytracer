@@ -23,7 +23,7 @@ public class Scene {
     new Vertex(10, 6, -5),
     new Vertex(10, 6, 5),
     new Vertex(0, 6, 5),
-    .0,1.0,0.4
+    0.0,0.7,0.4
   );
 
   Rectangle W2 = new Rectangle(
@@ -31,35 +31,35 @@ public class Scene {
     new Vertex(13, 0, -5),
     new Vertex(13, 0, 5),
     new Vertex(10, 6, 5),
-    1.0,1.0,1.0
+    0.7,0.4,0.0
   );
   Rectangle W3 = new Rectangle(
     new Vertex(13, 0, -5),
     new Vertex(10, -6, -5),
     new Vertex(10, -6, 5),
     new Vertex(13, 0, 5),
-    0.7,0.0,0.0
+    0.4,0.0,0.7
   );
   Rectangle W4 = new Rectangle(
     new Vertex(10, -6, -5),
     new Vertex(0, -6, -5),
     new Vertex(0, -6, 5),
     new Vertex(10, -6, 5),
-    0.0,0.0,0.7
+    0.0,0.7,0.4
   );
   Rectangle W5 = new Rectangle(
     new Vertex(0, -6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(-3, 0, 5),
     new Vertex(0, -6, 5),
-    1.0,0.7,1.0
+    0.7,0.4,0.0
   );
   Rectangle W6 = new Rectangle(
     new Vertex(-3, 0, -5),
     new Vertex(0, 6, -5),
     new Vertex(0, 6, 5),
     new Vertex(-3, 0, 5),
-    1.0,0.7,0.4
+    0.4,0.0,0.7
   );
 
   /**
@@ -70,19 +70,19 @@ public class Scene {
     new Vertex(0, 6, -5),
     new Vertex(0, -6, -5),
     new Vertex(10, -6, -5),
-    1.0,1.0,1.0
+    0.5,0.5,0.5
   );
   Triangle Floor_W2 = new Triangle(
     new Vertex(0, 6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(0, -6, -5),
-    1.0,1.0,1.0
+    0.5,0.5,0.5
   );
   Triangle Floor_W3 = new Triangle(
     new Vertex(10, -6, -5),
     new Vertex(13, 0, -5),
     new Vertex(10, 6, -5),
-    1.0,1.0,1.0
+    0.5,0.5,0.5
   );
 
   /**
@@ -93,19 +93,19 @@ public class Scene {
     new Vertex(10, -6, 5),
     new Vertex(0, -6, 5),
     new Vertex(0, 6, 5),
-    1.0,0.7,0.4
+    0.5,0.5,0.5
   );
   Triangle Roof_W2 = new Triangle(
     new Vertex(0, 6, 5),
     new Vertex(0, -6, 5),
     new Vertex(-3, 0, 5),
-    1.0,0.7,0.4
+    0.5,0.5,0.5
   );
   Triangle Roof_W3 = new Triangle(
     new Vertex(10, 6, 5),
     new Vertex(13, 0, 5),
     new Vertex(10, -6, 5),
-    1.0,0.7,0.4
+    0.5,0.5,0.5
   );
 
   /**
