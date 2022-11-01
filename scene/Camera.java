@@ -90,7 +90,7 @@ public class Camera extends Thread {
 
         ColorRGB indirect = new ColorRGB();
 
-        indirect = ray.parent.hitObj.color.mult(ray.radiance).mult(ray.hitObj.reflectCoeff);
+        indirect = ray.parent.hitObj.color.mult(ray.radiance).mult(ray.hitObj.material.reflectCoeff);
 
         ColorRGB direct = ray.parent.hitObj.calculateDirectLight(scene.light, ray.parent.intersectPoint, 2,
             scene.sceneObjects);

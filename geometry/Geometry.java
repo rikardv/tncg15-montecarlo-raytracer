@@ -9,7 +9,7 @@ import utils.*;
 
 public class Geometry {
 
-  public double reflectCoeff = 0.2;
+  
 
   public ColorRGB color = new ColorRGB();
 
@@ -53,9 +53,6 @@ public class Geometry {
     this.normal = normal;
   }
 
-  public void setReflectionCoeff(double coeff) {
-    reflectCoeff = coeff;
-  }
 
   public void SetColor(double R, double G, double B) {
     color = new ColorRGB(R, G, B);
@@ -190,20 +187,39 @@ public class Geometry {
   }
 
   public Ray getRandomDirection(Ray rayIn, Vertex intersectionPoint) {
+        double p = 0.25;
     Random rand = new Random();
     double yi = rand.nextDouble();
-    double azimuth = (2 * Math.PI) / (yi);
-    double inclination = Math.acos(Math.sqrt(rand.nextDouble()));
+    double yi_next = rand.nextDouble();
+    double azimuth = (2 * Math.PI * yi) / p;
+    double inclination = Math.acos(Math.sqrt(yi_next));
+
+    // Conversion of hemispherical into cartesian
+    double x0 = Math.cos(azimuth) * Math.sin(inclination);
+    double y0 = Math.sin(azimuth) * Math.sin(inclination);
+    double z0 = Math.cos(inclination);
+
+    // Cartesian local system to world coordinate system
     Vector3d N = this instanceof Sphere ? getNormal(intersectionPoint) : getNormal();
+    Vector3d X = N.Multiply(Maths.dotProduct(N, rayIn.dir)).sub(rayIn.dir).norm();
+    Vector3d Z = N;
+    Vector3d Y = Maths.crossProduct(Z, X);
 
-    Vector3d randomNormal = new Vector3d(rand.nextDouble()*N.x, rand.nextDouble()*N.y, rand.nextDouble()*N.z).norm();
+    //Calculate x0*XL + y0*YL + z0*ZL
+    double x = x0 * X.x + y0 * Y.x + z0 * Z.x;
+    double y = x0 * X.y + y0 * Y.y + z0 * Z.y;
+    double z = x0 * X.z + y0 * Y.z + z0 * Z.z;
 
-    
+    Vector3d directionRay = new Vector3d(x, y, z);
 
-    if (azimuth <= 2 * Math.PI) {
-      // don't know how to handle this case yet
-    }
-    Ray rayOut = new Ray(intersectionPoint, randomNormal);
+
+    // if (azimuth <= 2 * Math.PI) {
+    //   // don't know how to handle this case yet
+    //   Vector3d invalidRay = new Vector3d(-100, -100, -100);
+    //   return new Ray(intersectionPoint, invalidRay);
+    // }
+
+    Ray rayOut = new Ray(intersectionPoint, directionRay);
     rayOut.depth = rayIn.depth + 1;
 
     return rayOut;
