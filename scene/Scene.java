@@ -70,19 +70,19 @@ public class Scene {
     new Vertex(0, 6, -5),
     new Vertex(0, -6, -5),
     new Vertex(10, -6, -5),
-    1.0,1.0,1.0
+    0.2,0.2,0.3
   );
   Triangle Floor_W2 = new Triangle(
     new Vertex(0, 6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(0, -6, -5),
-    1.0,1.0,1.0
+    0.2,0.2,0.3
   );
   Triangle Floor_W3 = new Triangle(
     new Vertex(10, -6, -5),
     new Vertex(13, 0, -5),
     new Vertex(10, 6, -5),
-    1.0,1.0,1.0
+    0.2,0.2,0.3
   );
 
   /**
@@ -113,7 +113,7 @@ public class Scene {
    */
 
   Sphere firstSphere = new Sphere(
-    new Vertex(9,0,-1),
+    new Vertex(9,0,2),
     2.0,
     1.0,1.0,1.0
   );
@@ -134,7 +134,7 @@ public class Scene {
 
     // Create materials for objects
     Material mirror = new Material(1.0f, 1, 1, MaterialType.MIRROR);
-    Material lightMaterial = new Material(0.0f, 1, 1, MaterialType.LIGHT_SOURCE);
+    Material lightMaterial = new Material(0.1f, 1, 1, MaterialType.LIGHT_SOURCE);
 
 
     // Set materials
@@ -148,6 +148,8 @@ public class Scene {
     sceneObjects.add(light);
     
      sceneObjects.add(W4);
+
+     W3.setMaterial(mirror);
      sceneObjects.add(W3);
      
     sceneObjects.add(W2);
@@ -160,7 +162,8 @@ public class Scene {
     sceneObjects.add(Roof_W1);
     sceneObjects.add(Roof_W2);
     sceneObjects.add(Roof_W3);
-    sceneObjects.add(firstSphere);
+    // firstSphere.setMaterial(mirror);
+    //sceneObjects.add(firstSphere);
     //firstSphere.setReflectionCoeff(0.6);
     //sceneObjects.add(lightBlock);
     
