@@ -1,8 +1,8 @@
 package geometry;
 
 public enum MaterialType {
-    MIRROR,
-    LAMBERTIAN,
-    TRANSPARENT,
-    LIGHT_SOURCE
-  }
+  MIRROR,
+  LAMBERTIAN,
+  TRANSPARENT,
+  LIGHT_SOURCE,
+}

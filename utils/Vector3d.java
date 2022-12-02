@@ -43,9 +43,7 @@ public class Vector3d {
     return new Vector3d(this.x + other.x, this.y + other.y, this.z + other.z);
   }
 
-  
-
-  public double vectorLength(){
+  public double vectorLength() {
     double length = Math.sqrt(
       Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2)
     );
@@ -58,6 +56,4 @@ public class Vector3d {
     );
     return new Vector3d(this.x / length, this.y / length, this.z / length);
   }
-
- 
 }

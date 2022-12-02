@@ -3,13 +3,15 @@ package utils;
 import geometry.*;
 
 public class MollerTrumbore {
+
   // 9 nollor är idealt
   private static final double EPSILON = 0.000000001;
 
   public static double rayIntersectsTriangle(
-      Vertex rayOrigin,
-      Ray rayVector,
-      Triangle inTriangle) {
+    Vertex rayOrigin,
+    Ray rayVector,
+    Triangle inTriangle
+  ) {
     Vertex vertex0 = inTriangle.getVertex0();
     Vertex vertex1 = inTriangle.getVertex1();
     Vertex vertex2 = inTriangle.getVertex2();
@@ -17,9 +19,10 @@ public class MollerTrumbore {
     Vector3d edge2 = new Vector3d();
     Vector3d h = new Vector3d();
     Vector3d s = new Vector3d(
-        rayOrigin.x - vertex0.x,
-        rayOrigin.y - vertex0.y,
-        rayOrigin.z - vertex0.z);
+      rayOrigin.x - vertex0.x,
+      rayOrigin.y - vertex0.y,
+      rayOrigin.z - vertex0.z
+    );
     Vector3d q = new Vector3d();
     double a, f, u, v;
     edge1 = vertex1.CreateEdge(vertex0);
@@ -55,39 +58,39 @@ public class MollerTrumbore {
   }
 
   public static double rayIntersectsRectangle(
-      Vertex rayOrigin,
-      Ray rayVector,
-      Rectangle inRectangle) {
+    Vertex rayOrigin,
+    Ray rayVector,
+    Rectangle inRectangle
+  ) {
     Triangle Triangle1 = new Triangle(
-        inRectangle.v1,
-        inRectangle.v2,
-        inRectangle.v3);
+      inRectangle.v1,
+      inRectangle.v2,
+      inRectangle.v3
+    );
     Triangle Triangle2 = new Triangle(
-        inRectangle.v1,
-        inRectangle.v3,
-        inRectangle.v4);
+      inRectangle.v1,
+      inRectangle.v3,
+      inRectangle.v4
+    );
 
     double firstTriangleIntersect = MollerTrumbore.rayIntersectsTriangle(
-        rayOrigin,
-        rayVector,
-        Triangle1);
+      rayOrigin,
+      rayVector,
+      Triangle1
+    );
 
     double secondTriangleIntersect = MollerTrumbore.rayIntersectsTriangle(
-        rayOrigin,
-        rayVector,
-        Triangle2);
+      rayOrigin,
+      rayVector,
+      Triangle2
+    );
 
     if (firstTriangleIntersect > 0.0) {
       return firstTriangleIntersect;
-    }
-
-    else if (secondTriangleIntersect > 0.0) {
+    } else if (secondTriangleIntersect > 0.0) {
       return secondTriangleIntersect;
-    }
-
-    else {
+    } else {
       return -1.0;
     }
   }
-
 }

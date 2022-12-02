@@ -9,8 +9,6 @@ import utils.*;
 
 public class Geometry {
 
-  
-
   public ColorRGB color = new ColorRGB();
 
   public Vector3d normal;
@@ -53,7 +51,6 @@ public class Geometry {
     this.normal = normal;
   }
 
-
   public void SetColor(double R, double G, double B) {
     color = new ColorRGB(R, G, B);
   }
@@ -64,7 +61,7 @@ public class Geometry {
   }
 
   public ColorRGB calculateDirectLight(Light LightSource, Vertex pointOFIntersection, int nrShadowRays,
-      ArrayList<Geometry> sceneObjects) {
+      ArrayList<Geometry> sceneObjects, double multiplier) {
     int shadowRays = nrShadowRays;
     // var q = u * ( v1 - v0) + v * (v2 - v0);
 
@@ -129,12 +126,24 @@ public class Geometry {
 
     float brdfCoeff = this.material.getMaterialBRDF();
 
-    Ld = L.mult((LightArea / (Math.PI * shadowRays)));
+    Ld = L.mult((LightArea / shadowRays)*brdfCoeff);
 
     // if (!this->isVisible(shadowRay)) Vk = 0.0f;
     // else Vk = 1.0f;
 
-    return Ld.mult(1);
+    if (Ld.g < 0) {
+      Ld.g = 0;
+    }
+
+    if (Ld.r < 0) {
+      Ld.r = 0;
+    }
+
+    if (Ld.b < 0) {
+      Ld.b = 0;
+    }
+
+    return Ld.mult(multiplier);
   }
 
   public void setMaterial(Material material) {
@@ -187,12 +196,17 @@ public class Geometry {
   }
 
   public Ray getRandomDirection(Ray rayIn, Vertex intersectionPoint) {
-        double p = 0.25;
+    double p = this.material.reflectCoeff;
     Random rand = new Random();
     double yi = rand.nextDouble();
     double yi_next = rand.nextDouble();
     double azimuth = (2 * Math.PI * yi) / p;
     double inclination = Math.acos(Math.sqrt(yi_next));
+
+    if (azimuth <= 2 * Math.PI) {
+      Vector3d invalidRay = new Vector3d(-100, -100, -100);
+      return new Ray(intersectionPoint, invalidRay);
+    }
 
     // Conversion of hemispherical into cartesian
     double x0 = Math.cos(azimuth) * Math.sin(inclination);
@@ -205,19 +219,12 @@ public class Geometry {
     Vector3d Z = N;
     Vector3d Y = Maths.crossProduct(Z, X);
 
-    //Calculate x0*XL + y0*YL + z0*ZL
+    // Calculate x0*XL + y0*YL + z0*ZL
     double x = x0 * X.x + y0 * Y.x + z0 * Z.x;
     double y = x0 * X.y + y0 * Y.y + z0 * Z.y;
     double z = x0 * X.z + y0 * Y.z + z0 * Z.z;
 
     Vector3d directionRay = new Vector3d(x, y, z);
-
-
-    // if (azimuth <= 2 * Math.PI) {
-    //   // don't know how to handle this case yet
-    //   Vector3d invalidRay = new Vector3d(-100, -100, -100);
-    //   return new Ray(intersectionPoint, invalidRay);
-    // }
 
     Ray rayOut = new Ray(intersectionPoint, directionRay);
     rayOut.depth = rayIn.depth + 1;

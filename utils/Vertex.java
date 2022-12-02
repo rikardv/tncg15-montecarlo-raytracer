@@ -57,14 +57,8 @@ public class Vertex {
     );
   }
 
-  public Vertex translate(Vector3d edge){
-    return new Vertex(
-    this.x + edge.x,
-    this.y + edge.y,
-    this.z + edge.z
-    );
-
-
+  public Vertex translate(Vector3d edge) {
+    return new Vertex(this.x + edge.x, this.y + edge.y, this.z + edge.z);
   }
 
   // takes to a vertex and returns the vector of the edge drawn between them
@@ -85,11 +79,7 @@ public class Vertex {
   }
 
   public Vertex mult(double mul) {
-    return new Vertex(
-      this.x * mul,
-      this.y * mul,
-      this.z * mul
-    );
+    return new Vertex(this.x * mul, this.y * mul, this.z * mul);
   }
 
   public void printVertex() {

@@ -1,7 +1,6 @@
 package geometry;
 
 import java.util.Random;
-
 import utils.*;
 
 public class Triangle extends Geometry {
@@ -62,15 +61,8 @@ public class Triangle extends Geometry {
     return this.v3;
   }
 
-  public double checkIntersect(
-    Vertex rayOrigin,
-    Ray rayVector
-  ) {
-    return MollerTrumbore.rayIntersectsTriangle(
-      rayOrigin,
-      rayVector,
-      this
-    );
+  public double checkIntersect(Vertex rayOrigin, Ray rayVector) {
+    return MollerTrumbore.rayIntersectsTriangle(rayOrigin, rayVector, this);
   }
 
   @Override
@@ -78,10 +70,8 @@ public class Triangle extends Geometry {
     return normal.norm();
   }
 
-
   @Override
-    public boolean hitLight() {
-        return false;
-    }
-
+  public boolean hitLight() {
+    return false;
   }
+}
