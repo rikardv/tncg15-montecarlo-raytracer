@@ -31,7 +31,7 @@ public class Sphere extends Geometry {
     @Override
     public Ray bounceRay(Ray rayIn, Vertex intersectionPoint) {
         Vertex start = intersectionPoint;
-
+        
         normal = getNormal(intersectionPoint);
         // R = L - 2(N dot L)N
 
@@ -49,7 +49,7 @@ public class Sphere extends Geometry {
     }
     
     public Vector3d getNormal(Vertex pointOfIntersection) {
-        return pointOfIntersection.add(centerPosition).CreateEdge(centerPosition).norm();
+        return pointOfIntersection.CreateEdge(centerPosition).norm();
     }
 
     @Override

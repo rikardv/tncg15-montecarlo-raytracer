@@ -60,14 +60,18 @@ public class Camera extends Thread {
 
   public ColorRGB computeRadianceFlow(Ray ray, Scene scene) {
 
-    if (ray.hitObj instanceof Sphere) {
-      // System.out.println("hej");
-    }
-
+   
+    //ljuset faller imellan i en skarv
     if (ray.hitObj == null) {
-      ray.setRadiance(new ColorRGB(0, 0, 0));
-    }
 
+      ray.setRadiance(new ColorRGB(0, 0, 0));
+    
+    }
+    else if (ray.hitObj.material.type == MaterialType.MIRROR) {
+      System.out.println("hej");
+   }
+
+   //borde inte hända och händer inte
     else if (ray.hitObj.material.type == MaterialType.LIGHT_SOURCE) {
       ray.setRadiance(new ColorRGB(1, 1, 1));
     }
@@ -86,17 +90,24 @@ public class Camera extends Thread {
       // Sum these together
       // Store in ray and go to next parent
 
-      if (ray.parent.hitObj.material.type == MaterialType.LAMBERTIAN) {
+      if (ray.parent.hitObj.material.type == MaterialType.LAMBERTIAN || ray.parent.hitObj.material.type == MaterialType.LIGHT_SOURCE) {
 
         ColorRGB indirect = new ColorRGB();
 
         indirect = ray.parent.hitObj.color.mult(ray.radiance).mult(ray.hitObj.material.reflectCoeff);
-
         ColorRGB direct = ray.parent.hitObj.calculateDirectLight(scene.light, ray.parent.intersectPoint, 2,
-            scene.sceneObjects);
+        scene.sceneObjects);
+
+        if(ray.hitObj.material.type != MaterialType.MIRROR){
+       
         ColorRGB sum = direct.add(indirect);
         ray.parent.setRadiance(sum);
-
+      }
+      //spegel?
+      if(ray.hitObj.material.type == MaterialType.MIRROR){
+        ray.parent.setRadiance(direct);
+      }
+      
       }
 
       // ** If mirror **
@@ -104,6 +115,8 @@ public class Camera extends Thread {
       // Store in ray and go to next parent
       if (ray.parent.hitObj.material.type == MaterialType.MIRROR) {
         ray.parent.setRadiance(ray.radiance);
+
+       
       }
 
       ray = ray.parent;
@@ -145,11 +158,22 @@ public class Camera extends Thread {
         else {
           currentRay.setHitObject(obj);
           currentRay.setIntersectionPoint(outPoint);
-          if (currentRay.depth > 5  && random > P) {
-            reflectedRay = obj.getRandomDirection(currentRay, outPoint);
-          } else {
+
+          //else fallet inträffar för ofta, typ alltid men jag tror det var så vi tänkte haah 
+          // if (currentRay.depth > 5  && random > P) {
+            
+          //   reflectedRay = obj.getRandomDirection(currentRay, outPoint);
+          // } else {
+          //   reflectedRay = obj.bounceRay(currentRay, outPoint);
+          // }
+
+          //russian roulette magic 
+          if(obj.material.type == MaterialType.MIRROR){
             reflectedRay = obj.bounceRay(currentRay, outPoint);
           }
+          else{
+          reflectedRay = obj.getRandomDirection(currentRay, outPoint);}
+          
           reflectedRay.setParent(currentRay);
           finalRay = buildRayPath(scene, outPoint, reflectedRay, outPoint);
         }
@@ -200,7 +224,7 @@ public class Camera extends Thread {
         
 
         if (pixelColor.r > 0) {
-          // System.out.println("slyna");
+          
         }
 
         if (currentRay.radiance == null) {

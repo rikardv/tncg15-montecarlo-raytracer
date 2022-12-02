@@ -10,9 +10,9 @@ public class Material {
     public MaterialType type;
 
     public Material() {
-        this.reflectCoeff = 0.7f;
+        this.reflectCoeff = 0.5f;
         this.n = 1.0f;
-        this.roughness = 1.0f;
+        this.roughness = 10.5f;
         this.type = MaterialType.LAMBERTIAN;
     }
 

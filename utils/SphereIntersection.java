@@ -39,13 +39,13 @@ public class SphereIntersection {
 
         // One solution
         else if (arg < EPSILON) {
-            d = -(c2 + Math.sqrt(arg)) / (2.0 * c1);
+            d = -((c2 ) / (2.0 * c1))+ Math.sqrt(arg);
         }
 
         else {
             // Two solutions
-            d1 = -(c2 + Math.sqrt(arg)) / (2.0 * c1);
-            d2 = -(c2 - Math.sqrt(arg)) / (2.0 * c1);
+            d1 = -((c2 ) / (2.0 * c1))+ Math.sqrt(arg);
+            d2 = -((c2 ) / (2.0 * c1))- Math.sqrt(arg);
 
             if (d2 > d1) {
                 d = d1;
@@ -54,7 +54,8 @@ public class SphereIntersection {
             }
         };
 
-        return d;
+     
+      return d;
 
     }
 

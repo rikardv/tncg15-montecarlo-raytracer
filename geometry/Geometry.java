@@ -33,6 +33,7 @@ public class Geometry {
     // R = L - 2(N dot L)N
 
     double NdotL = 2 * Maths.dotProduct(rayIn.dir.norm(), normal.norm());
+    
     Vector3d R = (rayIn.dir.norm()).sub(normal.norm().Multiply(NdotL));
     Ray rayOut = new Ray(start, R);
     // rayIn.setChild(rayOut);
@@ -211,7 +212,7 @@ public class Geometry {
     double z = x0 * X.z + y0 * Y.z + z0 * Z.z;
 
     Vector3d directionRay = new Vector3d(x, y, z);
-
+   
 
     // if (azimuth <= 2 * Math.PI) {
     //   // don't know how to handle this case yet

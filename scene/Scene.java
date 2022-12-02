@@ -10,6 +10,7 @@ import geometry.MaterialType;
 import java.util.ArrayList;
 import java.util.Random;
 
+import utils.ColorRGB;
 import utils.Vertex;
 import java.util.*;
 
@@ -23,7 +24,7 @@ public class Scene {
     new Vertex(10, 6, -5),
     new Vertex(10, 6, 5),
     new Vertex(0, 6, 5),
-    .0,1.0,0.4
+    0.0,0.9,0.4
   );
 
   Rectangle W2 = new Rectangle(
@@ -31,14 +32,14 @@ public class Scene {
     new Vertex(13, 0, -5),
     new Vertex(13, 0, 5),
     new Vertex(10, 6, 5),
-    1.0,1.0,1.0
+    0.2,0.2,0.2
   );
   Rectangle W3 = new Rectangle(
     new Vertex(13, 0, -5),
     new Vertex(10, -6, -5),
     new Vertex(10, -6, 5),
     new Vertex(13, 0, 5),
-    0.7,0.0,0.0
+    0.5,0.1,0.1
   );
   Rectangle W4 = new Rectangle(
     new Vertex(10, -6, -5),
@@ -52,14 +53,14 @@ public class Scene {
     new Vertex(-3, 0, -5),
     new Vertex(-3, 0, 5),
     new Vertex(0, -6, 5),
-    1.0,0.7,1.0
+    0.9,0.7,1.0
   );
   Rectangle W6 = new Rectangle(
     new Vertex(-3, 0, -5),
     new Vertex(0, 6, -5),
     new Vertex(0, 6, 5),
     new Vertex(-3, 0, 5),
-    1.0,0.7,0.4
+    0.9,0.7,0.4
   );
 
   /**
@@ -70,19 +71,19 @@ public class Scene {
     new Vertex(0, 6, -5),
     new Vertex(0, -6, -5),
     new Vertex(10, -6, -5),
-    1.0,1.0,1.0
+    0.9,0.9,0.9
   );
   Triangle Floor_W2 = new Triangle(
     new Vertex(0, 6, -5),
     new Vertex(-3, 0, -5),
     new Vertex(0, -6, -5),
-    1.0,1.0,1.0
+    0.9,0.9,0.9
   );
   Triangle Floor_W3 = new Triangle(
     new Vertex(10, -6, -5),
     new Vertex(13, 0, -5),
     new Vertex(10, 6, -5),
-    1.0,1.0,1.0
+    0.9,0.9,0.9
   );
 
   /**
@@ -93,19 +94,19 @@ public class Scene {
     new Vertex(10, -6, 5),
     new Vertex(0, -6, 5),
     new Vertex(0, 6, 5),
-    1.0,0.7,0.4
+    0.9,0.7,0.4
   );
   Triangle Roof_W2 = new Triangle(
     new Vertex(0, 6, 5),
     new Vertex(0, -6, 5),
     new Vertex(-3, 0, 5),
-    1.0,0.7,0.4
+    0.9,0.7,0.4
   );
   Triangle Roof_W3 = new Triangle(
     new Vertex(10, 6, 5),
     new Vertex(13, 0, 5),
     new Vertex(10, -6, 5),
-    1.0,0.7,0.4
+    0.9,0.7,0.4
   );
 
   /**
@@ -113,9 +114,9 @@ public class Scene {
    */
 
   Sphere firstSphere = new Sphere(
-    new Vertex(9,0,-1),
-    2.0,
-    1.0,1.0,1.0
+    new Vertex(9,1,-1),
+    3.0,
+    0.0,0.0,0.0
   );
 
   Rectangle lightBlock = new Rectangle(
@@ -135,7 +136,7 @@ public class Scene {
     // Create materials for objects
     Material mirror = new Material(1.0f, 1, 1, MaterialType.MIRROR);
     Material lightMaterial = new Material(0.0f, 1, 1, MaterialType.LIGHT_SOURCE);
-
+   
 
     // Set materials
    //firstSphere.setMaterial(lambertianMaterial);
@@ -146,6 +147,7 @@ public class Scene {
    
     // Add objects to scene
     sceneObjects.add(light);
+    //W3.setMaterial(mirror);
     
      sceneObjects.add(W4);
      sceneObjects.add(W3);
@@ -160,6 +162,7 @@ public class Scene {
     sceneObjects.add(Roof_W1);
     sceneObjects.add(Roof_W2);
     sceneObjects.add(Roof_W3);
+    firstSphere.setMaterial(mirror);
     sceneObjects.add(firstSphere);
     //firstSphere.setReflectionCoeff(0.6);
     //sceneObjects.add(lightBlock);
