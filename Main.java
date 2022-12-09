@@ -30,8 +30,6 @@ public class Main {
     Scene testScene = new Scene();
     Camera camera = new Camera();
     camera.Render(testScene);
-    //System.out.println(testScene.getObj(0).checkIntersect(rayOrigin, rayVector, outIntersectionPoint));
-
     /**
      * Print time for program to execute
      */

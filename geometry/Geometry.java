@@ -151,9 +151,6 @@ public class Geometry {
   public boolean isVisible(Ray shadowRay, ArrayList<Geometry> sceneObjects) {
     Vertex pointOnSphere = shadowRay.start.translate(shadowRay.dir);
 
-    if (pointOnSphere.z < 0 && this instanceof Sphere) {
-      // System.out.println("hej");
-    }
 
     double distance = Math.abs(shadowRay.dir.vectorLength());
 
@@ -214,11 +211,10 @@ public class Geometry {
     Vector3d directionRay = new Vector3d(x, y, z);
    
 
-    // if (azimuth <= 2 * Math.PI) {
-    //   // don't know how to handle this case yet
-    //   Vector3d invalidRay = new Vector3d(-100, -100, -100);
-    //   return new Ray(intersectionPoint, invalidRay);
-    // }
+    if (azimuth <= 2 * Math.PI) {
+      Vector3d invalidRay = new Vector3d(-100, -100, -100);
+      return new Ray(intersectionPoint, invalidRay);
+    }
 
     Ray rayOut = new Ray(intersectionPoint, directionRay);
     rayOut.depth = rayIn.depth + 1;

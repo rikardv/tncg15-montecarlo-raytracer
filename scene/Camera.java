@@ -67,9 +67,6 @@ public class Camera extends Thread {
       ray.setRadiance(new ColorRGB(0, 0, 0));
     
     }
-    else if (ray.hitObj.material.type == MaterialType.MIRROR) {
-      System.out.println("hej");
-   }
 
    //borde inte hända och händer inte
     else if (ray.hitObj.material.type == MaterialType.LIGHT_SOURCE) {
@@ -218,18 +215,7 @@ public class Camera extends Thread {
 
         pixelColor.set(computeRadianceFlow(tempRay, scene));
         pixelColor = pixelColor.mult(10);
-        if (pixelColor.r >1||pixelColor.g >1||pixelColor.b >1){
-          //System.out.println("walla det är större än 1 jao ");
-        }
         
-
-        if (pixelColor.r > 0) {
-          
-        }
-
-        if (currentRay.radiance == null) {
-          System.out.println("x");
-        }
 
         pixelColor.intColor();
 
